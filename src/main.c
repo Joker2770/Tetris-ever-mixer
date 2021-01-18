@@ -35,8 +35,30 @@ SOFTWARE. */
 #include <SDL2/SDL.h>
 #endif
 
+#ifdef _MSC_VER // take care of M$ compiler
+ #if _MSC_VER <= 1200 // below VC6
+ #error Are you still use VC6?!
+ #else // up VC6
+ #if _MSC_VER >= 1600 
+  #include <stdint.h>
+ #else // below VC10
+  typedef signed char int8_t;
+  typedef unsigned short uint16_t;
+ #endif
+ #ifndef __cplusplus // for VC
+  typedef int bool;
+  #define true 1
+  #define false 0
+ #endif
+ #endif
+#else // other compilers
+ #include <stdint.h>
+ #ifndef __cplusplus 
+ #include <stdbool.h>
+ #endif
+#endif
+
 #include <stdio.h>
-#include <iostream>
 
 //Key press surfaces constants
 
