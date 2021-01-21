@@ -27,6 +27,32 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
+#ifndef __TETRIS_H__
+#define __TETRIS_H__
+
+#ifdef _MSC_VER // take care of M$ compiler
+ #if _MSC_VER <= 1200 // below VC6
+ #error Are you still use VC6?!
+ #else // up VC6
+ #if _MSC_VER >= 1600
+  #include <stdint.h>
+ #else // below VC10
+  typedef signed char int8_t;
+  typedef unsigned short uint16_t;
+ #endif
+ #ifndef __cplusplus // for VC
+  typedef int bool;
+  #define true 1
+  #define false 0
+ #endif
+ #endif
+#else // other compilers
+ #include <stdint.h>
+ #ifndef __cplusplus
+ #include <stdbool.h>
+ #endif
+#endif
+
 static const uint16_t SRS[7][4]={
 	{0x159D,0x89AB,0x26AE,0x4567},
 	{0x0159,0x4856,0x159A,0x4526},
@@ -64,3 +90,5 @@ void restart_game(void);
 bool check_collision(void);
 void rotate_rock(void);
 bool check_erasing(void);
+
+#endif
