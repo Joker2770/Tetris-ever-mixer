@@ -40,8 +40,8 @@ SOFTWARE. */
 #include <stdio.h>
 
 //window defination
-const int SCREEN_WIDTH = 260;
-const int SCREEN_HEIGHT = 300;
+const int SCREEN_WIDTH = 240;
+const int SCREEN_HEIGHT = 220;
 
 //Starts up SDL and creates window
 bool init();
@@ -137,13 +137,27 @@ bool init()
 			else
 			{
 				//Clear screen
-				SDL_SetRenderDrawColor(gRenderer, 0xa7, 0xba, 0x56, 0xFF);
+				SDL_SetRenderDrawColor(gRenderer, 0xa7, 0xba, 0x56, 0xff);
 				SDL_RenderClear(gRenderer);
 				
 				//Render red filled quad
-				SDL_Rect outline_rect = {5, 5, 115, 215};
-				SDL_SetRenderDrawColor(gRenderer, 0x25, 0x25, 0x26, 0xFF);
+				SDL_Rect outline_rect = {5, 5, 110, 210};
+				SDL_SetRenderDrawColor(gRenderer, 0x25, 0x25, 0x26, 0xff);
 				SDL_RenderDrawRect(gRenderer, &outline_rect);
+
+				//Render game area
+				for (int i = 0; i < 20; i++)
+				{
+					for (int j = 0; j < 10; j++)
+					{
+						//Render filled quad
+						SDL_Rect outline_rect = {11 + j * 10, 11 + i * 10, 8, 8};
+						SDL_Rect fill_rect = {13 + j * 10, 13 + i * 10, 4, 4};
+						SDL_SetRenderDrawColor(gRenderer, 0x8e, 0x9f, 0x45, 0xff);
+						SDL_RenderDrawRect(gRenderer, &outline_rect);
+						SDL_RenderFillRect(gRenderer, &fill_rect);
+					}
+				}
 				
 				//Update screen
 				SDL_RenderPresent(gRenderer);
