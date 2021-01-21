@@ -60,12 +60,9 @@ SOFTWARE. */
 
 #include <stdio.h>
 
-//Key press surfaces constants
-
-
-//窗口宽高
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+//window defination
+const int SCREEN_WIDTH = 260;
+const int SCREEN_HEIGHT = 300;
 
 //Starts up SDL and creates window
 bool init();
@@ -116,7 +113,7 @@ int main(int argc, char *argv[])
 				}
 
 				//Clear screen
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+				SDL_SetRenderDrawColor(gRenderer, 0xa7, 0xba, 0x56, 0xFF);
 				SDL_RenderClear(gRenderer);
 				
 				//Render red filled quad
