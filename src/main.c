@@ -81,7 +81,8 @@ int main(int argc, char *argv[])
 
 			//While application is running
 			while (!quit)
-			{//Handle events on queue
+			{
+				//Handle events on queue
 				while (SDL_PollEvent(&e) != 0)
 				{
 					//User requests quit
@@ -90,18 +91,6 @@ int main(int argc, char *argv[])
 						quit = true;
 					}
 				}
-
-				//Clear screen
-				SDL_SetRenderDrawColor(gRenderer, 0xa7, 0xba, 0x56, 0xFF);
-				SDL_RenderClear(gRenderer);
-				
-				//Render red filled quad
-				SDL_Rect fillRect = {0, 0, 10, 10};
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF);
-				SDL_RenderFillRect(gRenderer, &fillRect);
-				
-				//Update screen
-				SDL_RenderPresent(gRenderer);
 			}
 		}
 	}
@@ -147,8 +136,17 @@ bool init()
 			}
 			else
 			{
-				//Initialize renderer color
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+				//Clear screen
+				SDL_SetRenderDrawColor(gRenderer, 0xa7, 0xba, 0x56, 0xFF);
+				SDL_RenderClear(gRenderer);
+				
+				//Render red filled quad
+				SDL_Rect outline_rect = {5, 5, 115, 215};
+				SDL_SetRenderDrawColor(gRenderer, 0x25, 0x25, 0x26, 0xFF);
+				SDL_RenderDrawRect(gRenderer, &outline_rect);
+				
+				//Update screen
+				SDL_RenderPresent(gRenderer);
 			}
 
 		}
