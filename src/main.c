@@ -49,6 +49,9 @@ bool init();
 //Loads media
 bool loadMedia();
 
+//Render rectangle
+void render_rect(int x, int y, bool isDeep);
+
 //Frees media and shuts down SDL
 void closeAll();
 
@@ -150,12 +153,7 @@ bool init()
 				{
 					for (int j = 0; j < 10; j++)
 					{
-						//Render filled quad
-						SDL_Rect outline_rect = {11 + j * 10, 11 + i * 10, 8, 8};
-						SDL_Rect fill_rect = {13 + j * 10, 13 + i * 10, 4, 4};
-						SDL_SetRenderDrawColor(gRenderer, 0x8e, 0x9f, 0x45, 0xff);
-						SDL_RenderDrawRect(gRenderer, &outline_rect);
-						SDL_RenderFillRect(gRenderer, &fill_rect);
+						render_rect((j + 1) * 10, (i + 1) * 10, false);
 					}
 				}
 				
@@ -176,6 +174,19 @@ bool loadMedia()
 
 	//Nothing to load
 	return success;
+}
+
+void render_rect(int x, int y, bool isDeep)
+{
+	//Render filled quad
+	SDL_Rect outline_rect = {x + 1 , y + 1, 8, 8};
+	SDL_Rect fill_rect = {x + 3, y + 3, 4, 4};
+	if (isDeep)
+		SDL_SetRenderDrawColor(gRenderer, 0x25, 0x25, 0x26, 0xff);
+	else
+		SDL_SetRenderDrawColor(gRenderer, 0x8e, 0x9f, 0x45, 0xff);
+	SDL_RenderDrawRect(gRenderer, &outline_rect);
+	SDL_RenderFillRect(gRenderer, &fill_rect);
 }
 
 void closeAll()
