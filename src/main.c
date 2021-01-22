@@ -52,6 +52,9 @@ bool loadMedia();
 //Render rectangle
 void render_rect(int x, int y, bool isDeep);
 
+//Render rock
+void render_rock(int x, int y, uint16_t CAC);
+
 //Frees media and shuts down SDL
 void closeAll();
 
@@ -187,6 +190,16 @@ void render_rect(int x, int y, bool isDeep)
 		SDL_SetRenderDrawColor(gRenderer, 0x8e, 0x9f, 0x45, 0xff);
 	SDL_RenderDrawRect(gRenderer, &outline_rect);
 	SDL_RenderFillRect(gRenderer, &fill_rect);
+}
+
+void render_rock(int x, int y, uint16_t CAC)
+{
+	int P[4] = {0, 0, 0, 0};
+	for(int j=0;j<=3;j++)
+	{
+		P[j] = CAC&0xF, CAC>>=4;
+		render_rect((P[j]>>2) * 10 + x, (P[j]&0x3) * 10 + y, true);
+	}
 }
 
 void closeAll()
