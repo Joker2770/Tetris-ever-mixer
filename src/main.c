@@ -118,6 +118,47 @@ int main(int argc, char *argv[])
 						quit = true;
 					}
 				}
+
+				//Clear screen
+				SDL_SetRenderDrawColor(gRenderer, 0xa7, 0xba, 0x56, 0xff);
+				SDL_RenderClear(gRenderer);
+
+				//Render red filled quad
+				SDL_Rect outline_rect = {5, 5, 110, 210};
+				SDL_SetRenderDrawColor(gRenderer, 0x25, 0x25, 0x26, 0xff);
+				SDL_RenderDrawRect(gRenderer, &outline_rect);
+
+				//Render game area
+				for (int i = 0; i < 20; i++)
+				{
+					for (int j = 0; j < 10; j++)
+					{
+						render_rect((j + 1) * 10, (i + 1) * 10, false);
+					}
+				}
+
+				SDL_Color color = {0x25, 0x25, 0x26, 0xff};
+				render_font(gRenderer, gFont, "SCORE", color, 125, 5, NULL, 0.0, NULL, SDL_FLIP_NONE);
+				render_font(gRenderer, gFont, "LINES", color, 125, 40, NULL, 0.0, NULL, SDL_FLIP_NONE);
+				render_font(gRenderer, gFont, "LEVEL", color, 125, 75, NULL, 0.0, NULL, SDL_FLIP_NONE);
+				render_font(gRenderer, gFont, "NEXT", color, 125, 110, NULL, 0.0, NULL, SDL_FLIP_NONE);
+
+				SDL_Color color_b = {0x8e, 0x9f, 0x45, 0xff};
+				render_font(gRenderer, gFont, "888888", color_b, 145, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
+				render_font(gRenderer, gFont, "888888", color_b, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
+				render_font(gRenderer, gFont, "88", color_b, 175, 90, NULL, 0.0, NULL, SDL_FLIP_NONE);
+
+				//Render next area
+				for (int i = 0; i < 4; i++)
+				{
+					for (int j = 0; j < 4; j++)
+					{
+						render_rect(135 + j * 10, 125 + i * 10, false);
+					}
+				}
+
+				SDL_RenderPresent(gRenderer);
+				SDL_RenderClear(gRenderer);
 			}
 		}
 	}
@@ -155,7 +196,7 @@ bool init()
 		else
 		{
 			//Create renderer for window
-			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_SOFTWARE);
 			if (gRenderer == NULL)
 			{
 				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
@@ -163,33 +204,11 @@ bool init()
 			}
 			else
 			{
-
-				//Clear screen
-				SDL_SetRenderDrawColor(gRenderer, 0xa7, 0xba, 0x56, 0xff);
-				SDL_RenderClear(gRenderer);
-				
-				//Render red filled quad
-				SDL_Rect outline_rect = {5, 5, 110, 210};
-				SDL_SetRenderDrawColor(gRenderer, 0x25, 0x25, 0x26, 0xff);
-				SDL_RenderDrawRect(gRenderer, &outline_rect);
-
-				//Render game area
-				for (int i = 0; i < 20; i++)
-				{
-					for (int j = 0; j < 10; j++)
-					{
-						render_rect((j + 1) * 10, (i + 1) * 10, false);
-					}
-				}
-
 				//Initialize SDL_ttf
 				if (TTF_Init() == -1)
 				{
 					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 				}
-				
-				//Update screen
-				SDL_RenderPresent(gRenderer);
 			}
 
 		}
@@ -208,28 +227,6 @@ bool loadMedia()
 	{
 		printf("Failed to load TTF font: %s\n", TTF_GetError());
 	}
-
-	SDL_Color color = {0x25, 0x25, 0x26, 0xff};
-	render_font(gRenderer, gFont, "SCORE", color, 125, 5, NULL, 0.0, NULL, SDL_FLIP_NONE);
-	render_font(gRenderer, gFont, "LINES", color, 125, 40, NULL, 0.0, NULL, SDL_FLIP_NONE);
-	render_font(gRenderer, gFont, "LEVEL", color, 125, 75, NULL, 0.0, NULL, SDL_FLIP_NONE);
-	render_font(gRenderer, gFont, "NEXT", color, 125, 110, NULL, 0.0, NULL, SDL_FLIP_NONE);
-
-	SDL_Color color_b = {0x8e, 0x9f, 0x45, 0xff};
-	render_font(gRenderer, gFont, "888888", color_b, 145, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
-	render_font(gRenderer, gFont, "888888", color_b, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
-	render_font(gRenderer, gFont, "88", color_b, 175, 90, NULL, 0.0, NULL, SDL_FLIP_NONE);
-
-	//Render next area
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			render_rect(135 + j * 10, 125 + i * 10, false);
-		}
-	}
-
-	SDL_RenderPresent(gRenderer);
 
 	//Nothing to load
 	return success;
@@ -307,6 +304,13 @@ void render_font(SDL_Renderer* sRenderer,
 
 void closeAll()
 {
+	//Free global font
+	if (NULL != gFont)
+	{
+		TTF_CloseFont(gFont);
+		gFont = NULL;
+	}
+
 	//Free texture if it exists
 	if (gTexture != NULL)
 	{
@@ -314,13 +318,20 @@ void closeAll()
 		gTexture = NULL;
 	}
 
-	//Destroy window    
-	SDL_DestroyRenderer(gRenderer);
-	SDL_DestroyWindow(gWindow);
-	gWindow = NULL;
-	gRenderer = NULL;
+	//Destroy window
+	if (NULL != gRenderer)
+	{
+		SDL_DestroyRenderer(gRenderer);
+		gRenderer = NULL;
+	}
+	if (NULL != gWindow)
+	{
+		SDL_DestroyWindow(gWindow);
+		gWindow = NULL;
+	}
 
 	//Quit SDL subsystems
+	TTF_Quit();
 	SDL_Quit();
 }
 
