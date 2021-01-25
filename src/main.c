@@ -29,18 +29,20 @@ SOFTWARE. */
 
 #include "tetris.h"
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 //Windows
 #include "SDL.h"
+#include "SDL_ttf.h"
 #else
 //Linux...
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #endif
 
 #include <stdio.h>
 
 //window defination
-const int SCREEN_WIDTH = 240;
+const int SCREEN_WIDTH = 200;
 const int SCREEN_HEIGHT = 220;
 
 //Starts up SDL and creates window
@@ -55,6 +57,19 @@ void render_rect(int x, int y, bool isDeep);
 //Render rock
 void render_rock(int x, int y, uint16_t CAC);
 
+//Render font
+void render_font(SDL_Renderer* sRenderer,
+				TTF_Font* font,
+				const char* textureText,
+				SDL_Color textColor,
+				int x,
+				int y,
+				SDL_Rect* clip,
+				double angle,
+				SDL_Point* center,
+				SDL_RendererFlip flip
+				);
+
 //Frees media and shuts down SDL
 void closeAll();
 
@@ -63,6 +78,12 @@ SDL_Window* gWindow = NULL;
 
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
+
+//Font
+TTF_Font *gFont = NULL;
+
+//The actual hardware texture
+SDL_Texture* gTexture;
 
 int main(int argc, char *argv[])
 {
@@ -142,6 +163,7 @@ bool init()
 			}
 			else
 			{
+
 				//Clear screen
 				SDL_SetRenderDrawColor(gRenderer, 0xa7, 0xba, 0x56, 0xff);
 				SDL_RenderClear(gRenderer);
@@ -159,6 +181,12 @@ bool init()
 						render_rect((j + 1) * 10, (i + 1) * 10, false);
 					}
 				}
+
+				//Initialize SDL_ttf
+				if (TTF_Init() == -1)
+				{
+					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+				}
 				
 				//Update screen
 				SDL_RenderPresent(gRenderer);
@@ -174,6 +202,34 @@ bool loadMedia()
 {
 	//Loading success flag
 	bool success = true;
+
+	gFont = TTF_OpenFont("bb3273.ttf", 12);
+	if (gFont == NULL)
+	{
+		printf("Failed to load TTF font: %s\n", TTF_GetError());
+	}
+
+	SDL_Color color = {0x25, 0x25, 0x26, 0xff};
+	render_font(gRenderer, gFont, "SCORE", color, 125, 5, NULL, 0.0, NULL, SDL_FLIP_NONE);
+	render_font(gRenderer, gFont, "LINES", color, 125, 40, NULL, 0.0, NULL, SDL_FLIP_NONE);
+	render_font(gRenderer, gFont, "LEVEL", color, 125, 75, NULL, 0.0, NULL, SDL_FLIP_NONE);
+	render_font(gRenderer, gFont, "NEXT", color, 125, 110, NULL, 0.0, NULL, SDL_FLIP_NONE);
+
+	SDL_Color color_b = {0x8e, 0x9f, 0x45, 0xff};
+	render_font(gRenderer, gFont, "888888", color_b, 145, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
+	render_font(gRenderer, gFont, "888888", color_b, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
+	render_font(gRenderer, gFont, "88", color_b, 175, 90, NULL, 0.0, NULL, SDL_FLIP_NONE);
+
+	//Render next area
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			render_rect(135 + j * 10, 125 + i * 10, false);
+		}
+	}
+
+	SDL_RenderPresent(gRenderer);
 
 	//Nothing to load
 	return success;
@@ -202,8 +258,62 @@ void render_rock(int x, int y, uint16_t CAC)
 	}
 }
 
+void render_font(SDL_Renderer* sRenderer,
+				TTF_Font* font,
+				const char* textureText,
+				SDL_Color textColor,
+				int x,
+				int y,
+				SDL_Rect* clip,
+				double angle,
+				SDL_Point* center,
+				SDL_RendererFlip flip
+				)
+{
+	//Render text surface
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, textureText, textColor);
+	if (textSurface == NULL)
+	{
+		printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+	}
+	else
+	{
+		//Create texture from surface pixels
+		gTexture = SDL_CreateTextureFromSurface(sRenderer, textSurface);
+		if (gTexture == NULL)
+		{
+			printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+		}
+		else
+		{
+			//Set rendering space and render to screen
+			SDL_Rect renderQuad = { x, y, textSurface->w, textSurface->h};
+
+			//Set clip rendering dimensions
+			if (clip != NULL)
+			{
+				renderQuad.w = clip->w;
+				renderQuad.h = clip->h;
+			}
+
+			//Render to screen
+			SDL_RenderCopyEx(sRenderer, gTexture, clip, &renderQuad, angle, center, flip);
+		}
+
+		//Get rid of old surface
+		SDL_FreeSurface(textSurface);
+	}
+}
+
 void closeAll()
 {
+	//Free texture if it exists
+	if (gTexture != NULL)
+	{
+		SDL_DestroyTexture(gTexture);
+		gTexture = NULL;
+	}
+
 	//Destroy window    
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
