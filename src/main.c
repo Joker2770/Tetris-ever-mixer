@@ -55,7 +55,7 @@ bool loadMedia();
 void render_rect(int x, int y, bool isDeep);
 
 //Render rock
-void render_rock(int x, int y, uint16_t CAC);
+void render_rock(int x, int y, uint16_t CAC, bool isDeep);
 
 //Render font
 void render_font(SDL_Renderer* sRenderer,
@@ -248,13 +248,13 @@ void render_rect(int x, int y, bool isDeep)
 	SDL_RenderFillRect(gRenderer, &fill_rect);
 }
 
-void render_rock(int x, int y, uint16_t CAC)
+void render_rock(int x, int y, uint16_t CAC, bool isDeep)
 {
 	int P[4] = {0, 0, 0, 0};
 	for(int j=0;j<=3;j++)
 	{
 		P[j] = CAC&0xF, CAC>>=4;
-		render_rect((P[j]>>2) * 10 + x, (P[j]&0x3) * 10 + y, true);
+		render_rect((P[j]>>2) * 10 + x, (P[j]&0x3) * 10 + y, isDeep);
 	}
 }
 
