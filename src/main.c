@@ -82,9 +82,6 @@ SDL_Renderer* gRenderer = NULL;
 //Font
 TTF_Font *gFont = NULL;
 
-//The actual hardware texture
-SDL_Texture* gTexture;
-
 int main(int argc, char *argv[])
 {
 	if (!init())
@@ -275,9 +272,13 @@ void render_font(SDL_Renderer* sRenderer,
 	}
 	else
 	{
+
+		//The actual hardware texture
+		SDL_Texture* texture;
+
 		//Create texture from surface pixels
-		gTexture = SDL_CreateTextureFromSurface(sRenderer, textSurface);
-		if (gTexture == NULL)
+		texture = SDL_CreateTextureFromSurface(sRenderer, textSurface);
+		if (texture == NULL)
 		{
 			printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
 		}
@@ -294,11 +295,16 @@ void render_font(SDL_Renderer* sRenderer,
 			}
 
 			//Render to screen
-			SDL_RenderCopyEx(sRenderer, gTexture, clip, &renderQuad, angle, center, flip);
+			SDL_RenderCopyEx(sRenderer, texture, clip, &renderQuad, angle, center, flip);
+
+			//Free texture
+			SDL_DestroyTexture(texture);
+			texture = NULL;
 		}
 
 		//Get rid of old surface
 		SDL_FreeSurface(textSurface);
+		textSurface = NULL;
 	}
 }
 
@@ -309,13 +315,6 @@ void closeAll()
 	{
 		TTF_CloseFont(gFont);
 		gFont = NULL;
-	}
-
-	//Free texture if it exists
-	if (gTexture != NULL)
-	{
-		SDL_DestroyTexture(gTexture);
-		gTexture = NULL;
 	}
 
 	//Destroy window
