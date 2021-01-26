@@ -28,22 +28,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
 #include "tetris.h"
-
-#ifdef _MSC_VER
-//Windows
-#include "SDL.h"
-#include "SDL_ttf.h"
-#else
-//Linux...
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#endif
+#include "config.h"
 
 #include <stdio.h>
-
-//window defination
-const int SCREEN_WIDTH = 200;
-const int SCREEN_HEIGHT = 220;
 
 //Starts up SDL and creates window
 bool init();
@@ -62,6 +49,7 @@ void render_font(SDL_Renderer* sRenderer,
 				TTF_Font* font,
 				const char* textureText,
 				SDL_Color textColor,
+				SDL_Color bgColor,
 				int x,
 				int y,
 				SDL_Rect* clip,
@@ -98,12 +86,12 @@ int main(int argc, char *argv[])
 		else
 		{
 			//Clear screen
-			SDL_SetRenderDrawColor(gRenderer, 0xa7, 0xba, 0x56, 0xff);
+			SDL_SetRenderDrawColor(gRenderer, BG_COLOR.r, BG_COLOR.g, BG_COLOR.b, BG_COLOR.a);
 			SDL_RenderClear(gRenderer);
 
 			//Render quad
 			SDL_Rect outline_rect = {5, 5, 110, 210};
-			SDL_SetRenderDrawColor(gRenderer, 0x25, 0x25, 0x26, 0xff);
+			SDL_SetRenderDrawColor(gRenderer, DEEP_COLOR.r, DEEP_COLOR.g, DEEP_COLOR.b, DEEP_COLOR.a);
 			SDL_RenderDrawRect(gRenderer, &outline_rect);
 
 			//Render game area
@@ -115,16 +103,14 @@ int main(int argc, char *argv[])
 				}
 			}
 
-			SDL_Color color = {0x25, 0x25, 0x26, 0xff};
-			render_font(gRenderer, gFont, "SCORE", color, 125, 5, NULL, 0.0, NULL, SDL_FLIP_NONE);
-			render_font(gRenderer, gFont, "LINES", color, 125, 40, NULL, 0.0, NULL, SDL_FLIP_NONE);
-			render_font(gRenderer, gFont, "LEVEL", color, 125, 75, NULL, 0.0, NULL, SDL_FLIP_NONE);
-			render_font(gRenderer, gFont, "NEXT", color, 125, 110, NULL, 0.0, NULL, SDL_FLIP_NONE);
+			render_font(gRenderer, gFont, "SCORE", DEEP_COLOR, BG_COLOR, 125, 5, NULL, 0.0, NULL, SDL_FLIP_NONE);
+			render_font(gRenderer, gFont, "LINES", DEEP_COLOR, BG_COLOR, 125, 40, NULL, 0.0, NULL, SDL_FLIP_NONE);
+			render_font(gRenderer, gFont, "LEVEL", DEEP_COLOR, BG_COLOR, 125, 75, NULL, 0.0, NULL, SDL_FLIP_NONE);
+			render_font(gRenderer, gFont, "NEXT", DEEP_COLOR, BG_COLOR, 125, 110, NULL, 0.0, NULL, SDL_FLIP_NONE);
 
-			SDL_Color color_b = {0x8e, 0x9f, 0x45, 0xff};
-			render_font(gRenderer, gFont, "888888", color_b, 145, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
-			render_font(gRenderer, gFont, "888888", color_b, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
-			render_font(gRenderer, gFont, "88", color_b, 175, 90, NULL, 0.0, NULL, SDL_FLIP_NONE);
+			render_font(gRenderer, gFont, "          ", DEEP_COLOR, LIGHT_COLOR, 145, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
+			render_font(gRenderer, gFont, "          ", DEEP_COLOR, LIGHT_COLOR, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
+			render_font(gRenderer, gFont, "    ", DEEP_COLOR, LIGHT_COLOR, 175, 90, NULL, 0.0, NULL, SDL_FLIP_NONE);
 
 			//Render next area
 			for (int i = 0; i < 4; i++)
@@ -235,9 +221,9 @@ void render_rect(int x, int y, bool isDeep)
 	SDL_Rect outline_rect = {x + 1 , y + 1, 8, 8};
 	SDL_Rect fill_rect = {x + 3, y + 3, 4, 4};
 	if (isDeep)
-		SDL_SetRenderDrawColor(gRenderer, 0x25, 0x25, 0x26, 0xff);
+		SDL_SetRenderDrawColor(gRenderer, DEEP_COLOR.r, DEEP_COLOR.g, DEEP_COLOR.b, DEEP_COLOR.a);
 	else
-		SDL_SetRenderDrawColor(gRenderer, 0x8e, 0x9f, 0x45, 0xff);
+		SDL_SetRenderDrawColor(gRenderer, LIGHT_COLOR.r, LIGHT_COLOR.g, LIGHT_COLOR.b, LIGHT_COLOR.a);
 	SDL_RenderDrawRect(gRenderer, &outline_rect);
 	SDL_RenderFillRect(gRenderer, &fill_rect);
 }
@@ -256,6 +242,7 @@ void render_font(SDL_Renderer* sRenderer,
 				TTF_Font* font,
 				const char* textureText,
 				SDL_Color textColor,
+				SDL_Color bgColor,
 				int x,
 				int y,
 				SDL_Rect* clip,
@@ -293,6 +280,9 @@ void render_font(SDL_Renderer* sRenderer,
 				renderQuad.w = clip->w;
 				renderQuad.h = clip->h;
 			}
+			
+			SDL_SetRenderDrawColor(sRenderer, bgColor.r, bgColor.g, bgColor.b, bgColor.a);
+			SDL_RenderFillRect(sRenderer, &renderQuad);
 
 			//Render to screen
 			SDL_RenderCopyEx(sRenderer, texture, clip, &renderQuad, angle, center, flip);
