@@ -108,9 +108,9 @@ int main(int argc, char *argv[])
 			render_font(gRenderer, gFont, "LEVEL", DEEP_COLOR, BG_COLOR, 125, 75, NULL, 0.0, NULL, SDL_FLIP_NONE);
 			render_font(gRenderer, gFont, "NEXT", DEEP_COLOR, BG_COLOR, 125, 110, NULL, 0.0, NULL, SDL_FLIP_NONE);
 
-			render_font(gRenderer, gFont, "         0", DEEP_COLOR, LIGHT_COLOR, 145, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
-			render_font(gRenderer, gFont, "         0", DEEP_COLOR, LIGHT_COLOR, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
-			render_font(gRenderer, gFont, "   0", DEEP_COLOR, LIGHT_COLOR, 175, 90, NULL, 0.0, NULL, SDL_FLIP_NONE);
+			render_font(gRenderer, gFont, "        0", DEEP_COLOR, LIGHT_COLOR, 145, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
+			render_font(gRenderer, gFont, "        0", DEEP_COLOR, LIGHT_COLOR, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
+			render_font(gRenderer, gFont, "  0", DEEP_COLOR, LIGHT_COLOR, 175, 90, NULL, 0.0, NULL, SDL_FLIP_NONE);
 
 			//Render next area
 			for (int i = 0; i < 4; i++)
