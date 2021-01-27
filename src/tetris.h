@@ -73,17 +73,17 @@ static const uint16_t TGM[7][4]={
 	{0x156A,0x4152,0x156A,0x4152}
 };
 
-typedef struct rock_queue
-{
-	uint16_t rock_shape_bits;
-	uint8_t next_index; //0~27
-} rock_queue_t;
+static int GMPOOL[12][22] = {};
 
-typedef struct location
+typedef struct shape_data
 {
-	uint8_t left;
-	uint8_t top;
-} rock_location_t;
+	uint16_t cur_bit;
+	uint16_t next_bit;
+	int x;
+	int y;
+} shape_data_t;
+
+static shape_data_t shapeData;
 
 void init_game(void);
 void restart_game(void);

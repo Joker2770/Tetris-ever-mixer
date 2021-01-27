@@ -28,5 +28,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
 #include "tetris.h"
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
+void init_game(void)
+{
+    srand((unsigned)time(NULL));
+
+    for (int X = 0; X < 12; X++)
+    {
+        for (int Y = 0; Y < 22; Y++)
+        {
+            if (X == 0 || Y == 0 || X == 11 || Y == 21)
+                GMPOOL[X][Y] = 1;
+            else
+                GMPOOL[X][Y] = 0;
+        }
+    }
+    
+    shapeData.cur_bit = SRS[rand()][rand()];
+    shapeData.next_bit = SRS[rand()][rand()];
+    shapeData.x = 4;
+    shapeData.y = 1;
+}
