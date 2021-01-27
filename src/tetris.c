@@ -46,9 +46,9 @@ void init_game(void)
                 GMPOOL[X][Y] = 0;
         }
     }
-    
-    shapeData.cur_bit = SRS[rand()][rand()];
-    shapeData.next_bit = SRS[rand()][rand()];
+
+    shapeData.cur_bit = i_mode == 0 ? SRS[rand()][rand()] : TGM[rand()][rand()];
+    shapeData.next_bit = i_mode == 0 ? SRS[rand()][rand()] : TGM[rand()][rand()];
     shapeData.x = 4;
     shapeData.y = 1;
 }

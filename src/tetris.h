@@ -84,6 +84,7 @@ typedef struct shape_data
 } shape_data_t;
 
 static shape_data_t shapeData;
+static int i_mode = 0;
 
 void init_game(void);
 void restart_game(void);
