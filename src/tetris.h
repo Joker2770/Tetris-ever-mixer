@@ -79,17 +79,16 @@ typedef struct shape_data
 {
 	uint16_t cur_bit;
 	uint16_t next_bit;
+	int cur_shape_line;
+	int next_shape_line;
 	int x;
 	int y;
-} shape_data_t;
+} shape_data_t, *p_shape_data_t;
 
-static shape_data_t shapeData;
-static int i_mode = 0;
-
-void init_game(void);
+void init_game(int);
 void restart_game(void);
 bool check_collision(void);
-void rotate_rock(void);
+uint16_t rotate_rock(int, int, p_shape_data_t);
 bool check_erasing(void);
 
 #endif

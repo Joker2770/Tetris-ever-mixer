@@ -32,7 +32,7 @@ SOFTWARE. */
 #include <stdlib.h>
 #include <time.h>
 
-void init_game(void)
+void init_game(int i_mode)
 {
     srand((unsigned)time(NULL));
 
@@ -46,9 +46,9 @@ void init_game(void)
                 GMPOOL[X][Y] = 0;
         }
     }
+}
 
-    shapeData.cur_bit = i_mode == 0 ? SRS[rand()][rand()] : TGM[rand()][rand()];
-    shapeData.next_bit = i_mode == 0 ? SRS[rand()][rand()] : TGM[rand()][rand()];
-    shapeData.x = 4;
-    shapeData.y = 1;
+uint16_t rotate_rock(int i_mode , int i_seed, p_shape_data_t shapeData)
+{
+    return i_mode == 0 ? SRS[shapeData->cur_shape_line][i_seed&3] : TGM[shapeData->cur_shape_line][i_seed&3];
 }
