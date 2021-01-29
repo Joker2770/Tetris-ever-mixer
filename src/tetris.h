@@ -87,7 +87,7 @@ typedef struct shape_data
 
 void init_game(int);
 void restart_game(void);
-bool check_collision(void);
+bool check_collision(p_shape_data_t, int);
 uint16_t rotate_rock(int, int, p_shape_data_t);
 bool check_erasing(void);
 

@@ -52,3 +52,51 @@ uint16_t rotate_rock(int i_mode , int i_seed, p_shape_data_t shapeData)
 {
     return i_mode == 0 ? SRS[shapeData->cur_shape_line][i_seed&3] : TGM[shapeData->cur_shape_line][i_seed&3];
 }
+
+bool check_collision(p_shape_data_t shapeData, int offset)
+{
+    int pos[4][4] = {
+        {0,0,0,0},
+        {0,0,0,0},
+        {0,0,0,0},
+        {0,0,0,0},
+    };
+	int P[4] = {0, 0, 0, 0};
+	for(int j=0;j<4;j++)
+	{
+		P[j] = shapeData->cur_bit&0xF, shapeData->cur_bit>>=4;
+        pos[P[j]>>2][P[j]&0x3] = 1;
+	}
+    
+    //check left
+    if (offset & 0x3 == 0x2)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (GMPOOL[shapeData->x - 1][shapeData->y + i]&pos[0][i] == 1)
+                return true;
+        }
+    }
+    //check down
+    else if (offset & 0x3 == 0x3)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (GMPOOL[shapeData->x + i][shapeData->y + 4]&pos[i][3] == 1)
+                return true;
+        }
+    }
+    //check right
+    else if (offset & 0x3 == 0x1)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (GMPOOL[shapeData->x + 4][shapeData->y + i]&pos[3][i] == 1)
+                return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
