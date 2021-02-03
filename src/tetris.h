@@ -73,7 +73,20 @@ static const uint16_t TGM[7][4]={
 	{0x156A,0x4152,0x156A,0x4152}
 };
 
-static int GMPOOL[12][22] = {};
+static int GMPOOL[12][22] = {
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};
 
 typedef struct shape_data
 {
@@ -85,10 +98,11 @@ typedef struct shape_data
 	int y;
 } shape_data_t, *p_shape_data_t;
 
-void init_game(int);
+void init_game(int, p_shape_data_t);
 void restart_game(void);
+void fix_rock(p_shape_data_t);
 bool check_collision(p_shape_data_t, int);
 uint16_t rotate_rock(int, int, p_shape_data_t);
-bool check_erasing(void);
+void check_erasing(void);
 
 #endif

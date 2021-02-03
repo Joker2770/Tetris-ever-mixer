@@ -30,7 +30,15 @@ SOFTWARE. */
 #include "tetris.h"
 #include "config.h"
 
+#ifdef _win
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 //Starts up SDL and creates window
 bool init();
@@ -72,6 +80,8 @@ TTF_Font *gFont = NULL;
 
 int main(int argc, char *argv[])
 {
+    srand((unsigned)time(NULL));
+
 	if (!init())
 	{
 		printf("Failed to initialize!\n");
@@ -121,6 +131,11 @@ int main(int argc, char *argv[])
 				}
 			}
 
+			shape_data_t gShape;
+			p_shape_data_t shapeData = &gShape;
+			int i_mode = 0;
+			init_game(0, shapeData);
+
 			//Main loop flag
 			bool quit = false;
 
@@ -139,7 +154,16 @@ int main(int argc, char *argv[])
 						quit = true;
 					}
 				}
-				
+
+				render_rock(shapeData->x*10, shapeData->y*10, shapeData->cur_bit, true);
+				SDL_RenderPresent(gRenderer);
+				#ifdef _win
+				Sleep(1000);
+				#else
+				usleep(1000000);
+				#endif
+				render_rock(shapeData->x*10, shapeData->y*10, shapeData->cur_bit, false);
+				shapeData->y++;
 				SDL_RenderPresent(gRenderer);
 			}
 			SDL_RenderClear(gRenderer);

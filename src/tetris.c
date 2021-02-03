@@ -32,7 +32,7 @@ SOFTWARE. */
 #include <stdlib.h>
 #include <time.h>
 
-void init_game(int i_mode)
+void init_game(int i_mode, p_shape_data_t shapeData)
 {
     srand((unsigned)time(NULL));
 
@@ -45,6 +45,21 @@ void init_game(int i_mode)
             else
                 GMPOOL[X][Y] = 0;
         }
+    }
+
+    shapeData->x = 4;
+    shapeData->y = 1;
+    shapeData->cur_shape_line = rand()%7;
+    shapeData->next_shape_line = rand()%7;
+    if (i_mode == 0)
+    {
+        shapeData->cur_bit = SRS[shapeData->cur_shape_line][rand()%4];
+        shapeData->next_bit = SRS[shapeData->next_shape_line][rand()%4];
+    }
+    else
+    {
+        shapeData->cur_bit = TGM[shapeData->cur_shape_line][rand()%4];
+        shapeData->next_bit = TGM[shapeData->next_shape_line][rand()%4];
     }
 }
 
@@ -67,7 +82,7 @@ bool check_collision(p_shape_data_t shapeData, int offset)
 		P[j] = shapeData->cur_bit&0xF, shapeData->cur_bit>>=4;
         pos[P[j]>>2][P[j]&0x3] = 1;
 	}
-    
+
     //check left
     if (offset & 0x3 == 0x2)
     {
@@ -98,5 +113,33 @@ bool check_collision(p_shape_data_t shapeData, int offset)
     else
     {
         return false;
+    }
+}
+
+void check_erasing()
+{
+    for (int i = 1; i <= 20; i++)
+    {
+        int i_flag = 1;
+        for (int j = 1; j <= 10; j++)
+        {
+            i_flag &= GMPOOL[j][i];
+        }
+        if (i_flag == 1)
+        {
+            for (int m = i; m > 1; m--)
+            {
+                for (int n = 1; n <= 10; n++)
+                    GMPOOL[n][m] = GMPOOL[n][m-1];
+            }
+        }
+    }
+}
+
+void fix_rock(p_shape_data_t shapeData)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        GMPOOL[shapeData->x + (shapeData->cur_bit>>2)][shapeData->y + (shapeData->cur_bit&0x3)] = 1;
     }
 }
