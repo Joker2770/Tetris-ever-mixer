@@ -85,7 +85,7 @@ bool check_collision(p_shape_data_t shapeData, int offset)
 	}
 
     //check left
-    if (offset & 0x3 == 0x2)
+    if ((offset & 3) == 2)
     {
         int colum_of_leftmost = 3;
         bool bFlag = false;
@@ -105,7 +105,7 @@ bool check_collision(p_shape_data_t shapeData, int offset)
                 break;
             }
         }
-
+        printf("colum_of_leftmost: %d\n", colum_of_leftmost);
         for (int i = 0; i < 4; i++)
         {
             if (GMPOOL[shapeData->x - 1 + colum_of_leftmost][shapeData->y + i]&pos[colum_of_leftmost][i] == 1)
@@ -113,7 +113,7 @@ bool check_collision(p_shape_data_t shapeData, int offset)
         }
     }
     //check down
-    else if (offset & 0x3 == 0x3)
+    else if ((offset & 3) == 3)
     {
         int row_of_bottom = 3;
         bool bFlag = false;
@@ -140,7 +140,7 @@ bool check_collision(p_shape_data_t shapeData, int offset)
         }
     }
     //check right
-    else if (offset & 0x3 == 0x1)
+    else if ((offset & 3) == 1)
     {
         int colum_of_rightmost = 3;
         bool bFlag = false;
@@ -160,7 +160,7 @@ bool check_collision(p_shape_data_t shapeData, int offset)
                 break;
             }
         }
-
+        printf("colum_of_rightmost: %d\n", colum_of_rightmost);
         for (int i = 0; i < 4; i++)
         {
             if (GMPOOL[shapeData->x + colum_of_rightmost + 1][shapeData->y + i]&pos[colum_of_rightmost][i] == 1)

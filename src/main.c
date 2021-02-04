@@ -105,11 +105,11 @@ int main(int argc, char *argv[])
 			SDL_RenderDrawRect(gRenderer, &outline_rect);
 
 			//Render game area
-			for (int i = 0; i < 20; i++)
+			for (int i = 1; i <= 20; i++)
 			{
-				for (int j = 0; j < 10; j++)
+				for (int j = 1; j <= 10; j++)
 				{
-					render_rect((j + 1) * 10, (i + 1) * 10, false);
+					render_rect(j * 10, i * 10, false);
 				}
 			}
 
@@ -132,9 +132,9 @@ int main(int argc, char *argv[])
 			}
 
 			shape_data_t gShape;
-			p_shape_data_t shapeData = &gShape;
+			p_shape_data_t shape_data = &gShape;
 			int i_mode = 0;
-			init_game(0, shapeData);
+			init_game(0, shape_data);
 
 			//Main loop flag
 			bool quit = false;
@@ -145,6 +145,8 @@ int main(int argc, char *argv[])
 			//While application is running
 			while (!quit)
 			{
+				int i_offset = 0;
+
 				//Handle events on queue
 				while (SDL_PollEvent(&e) != 0)
 				{
@@ -153,24 +155,86 @@ int main(int argc, char *argv[])
 					{
 						quit = true;
 					}
+					else if (e.type == SDL_KEYDOWN)
+					{
+						switch (e.key.keysym.sym)
+						{
+						case SDLK_DOWN:
+							i_offset = 3;
+							break;
+						case SDLK_LEFT:
+							i_offset = 2;
+							break;
+						case SDLK_RIGHT:
+							i_offset = 1;
+							break;
+						case SDLK_q:
+							quit = true;
+							break;
+						default:
+							break;
+						}
+					}
 				}
 
-				render_rock(135, 125, shapeData->next_bit, true);
-				render_rock(shapeData->x*10, shapeData->y*10, shapeData->cur_bit, true);
+				if (i_offset == 2)
+				{
+					if (!check_collision(shape_data, i_offset))
+						shape_data->x--;
+				}
+				else if (i_offset == 1)
+				{
+					if (!check_collision(shape_data, i_offset))
+						shape_data->x++;
+				}
+				else if (i_offset == 3)
+				{
+					while(!check_collision(shape_data, i_offset))
+						shape_data->y++;
+				}
+
+				render_rock(135, 125, shape_data->next_bit, true);
+				render_rock(shape_data->x*10, shape_data->y*10, shape_data->cur_bit, true);
 				SDL_RenderPresent(gRenderer);
 				#ifdef _win
 				Sleep(1000);
 				#else
 				usleep(1000000);
 				#endif
-				render_rock(shapeData->x*10, shapeData->y*10, shapeData->cur_bit, false);
+				render_rock(shape_data->x*10, shape_data->y*10, shape_data->cur_bit, false);
 				SDL_RenderPresent(gRenderer);
-				if (check_collision(shapeData, 0x3))
+
+				if (check_collision(shape_data, 3))
 				{
-					fix_rock(shapeData);
+					fix_rock(shape_data);
+					
+					//Render game area
+					for (int i = 1; i <= 20; i++)
+					{
+						for (int j = 1; j <= 10; j++)
+						{
+							if (GMPOOL[j][i] == 1)
+							{
+								render_rect(j * 10, i * 10, true);
+							}
+						}
+					}
+
+					render_rock(135, 125, shape_data->next_bit, false);
+					SDL_RenderPresent(gRenderer);
+
+					shape_data->cur_shape_line = shape_data->next_shape_line;
+					shape_data->cur_bit = shape_data->next_bit;
+					shape_data->next_shape_line = rand()%7;
+					if (i_mode == 0)
+						shape_data->next_bit = SRS[shape_data->next_shape_line][0];
+					else
+						shape_data->next_bit = TGM[shape_data->next_shape_line][0];
+					shape_data->x = 4;
+					shape_data->y = 1;
 				}
 				else
-					shapeData->y++;
+					shape_data->y++;
 			}
 			SDL_RenderClear(gRenderer);
 		}
