@@ -155,6 +155,7 @@ int main(int argc, char *argv[])
 					}
 				}
 
+				render_rock(135, 125, shapeData->next_bit, true);
 				render_rock(shapeData->x*10, shapeData->y*10, shapeData->cur_bit, true);
 				SDL_RenderPresent(gRenderer);
 				#ifdef _win
@@ -163,8 +164,13 @@ int main(int argc, char *argv[])
 				usleep(1000000);
 				#endif
 				render_rock(shapeData->x*10, shapeData->y*10, shapeData->cur_bit, false);
-				shapeData->y++;
 				SDL_RenderPresent(gRenderer);
+				if (check_collision(shapeData, 0x3))
+				{
+					fix_rock(shapeData);
+				}
+				else
+					shapeData->y++;
 			}
 			SDL_RenderClear(gRenderer);
 		}

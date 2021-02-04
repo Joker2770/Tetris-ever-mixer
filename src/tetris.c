@@ -77,36 +77,93 @@ bool check_collision(p_shape_data_t shapeData, int offset)
         {0,0,0,0},
     };
 	int P[4] = {0, 0, 0, 0};
+    uint16_t u16_tmp_bit = shapeData->cur_bit;
 	for(int j=0;j<4;j++)
 	{
-		P[j] = shapeData->cur_bit&0xF, shapeData->cur_bit>>=4;
+		P[j] = u16_tmp_bit&0xF, u16_tmp_bit>>=4;
         pos[P[j]>>2][P[j]&0x3] = 1;
 	}
 
     //check left
     if (offset & 0x3 == 0x2)
     {
+        int colum_of_leftmost = 3;
+        bool bFlag = false;
+        for (int x = 0; x < 4; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                if (pos[x][y] | 0 == 1)
+                {
+                    bFlag = true;
+                    break;
+                }
+            }
+            if (bFlag)
+            {
+                colum_of_leftmost = x;
+                break;
+            }
+        }
+
         for (int i = 0; i < 4; i++)
         {
-            if (GMPOOL[shapeData->x - 1][shapeData->y + i]&pos[0][i] == 1)
+            if (GMPOOL[shapeData->x - 1 + colum_of_leftmost][shapeData->y + i]&pos[colum_of_leftmost][i] == 1)
                 return true;
         }
     }
     //check down
     else if (offset & 0x3 == 0x3)
     {
+        int row_of_bottom = 3;
+        bool bFlag = false;
+        for (int y = 3; y >= 0; y--)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                if (pos[x][y] | 0 == 1)
+                {
+                    bFlag = true;
+                    break;
+                }
+            }
+            if (bFlag)
+            {
+                row_of_bottom = y;
+                break;
+            }
+        }
         for (int i = 0; i < 4; i++)
         {
-            if (GMPOOL[shapeData->x + i][shapeData->y + 4]&pos[i][3] == 1)
+            if ((GMPOOL[shapeData->x + i][shapeData->y + row_of_bottom + 1])&(pos[i][row_of_bottom]) == 1)
                 return true;
         }
     }
     //check right
     else if (offset & 0x3 == 0x1)
     {
+        int colum_of_rightmost = 3;
+        bool bFlag = false;
+        for (int x = 3; x >= 0; x--)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                if (pos[x][y] | 0 == 1)
+                {
+                    bFlag = true;
+                    break;
+                }
+            }
+            if (bFlag)
+            {
+                colum_of_rightmost = x;
+                break;
+            }
+        }
+
         for (int i = 0; i < 4; i++)
         {
-            if (GMPOOL[shapeData->x + 4][shapeData->y + i]&pos[3][i] == 1)
+            if (GMPOOL[shapeData->x + colum_of_rightmost + 1][shapeData->y + i]&pos[colum_of_rightmost][i] == 1)
                 return true;
         }
     }
@@ -114,6 +171,8 @@ bool check_collision(p_shape_data_t shapeData, int offset)
     {
         return false;
     }
+    
+    return false;
 }
 
 void check_erasing()
@@ -138,8 +197,11 @@ void check_erasing()
 
 void fix_rock(p_shape_data_t shapeData)
 {
+    int P[4] = {0, 0, 0, 0};
+    uint16_t u16_tmp_bit = shapeData->cur_bit;
     for (int i = 0; i < 4; i++)
     {
-        GMPOOL[shapeData->x + (shapeData->cur_bit>>2)][shapeData->y + (shapeData->cur_bit&0x3)] = 1;
+        P[i] = u16_tmp_bit&0xF, u16_tmp_bit>>=4;
+        GMPOOL[shapeData->x + (P[i]>>2)][shapeData->y + (P[i]&0x3)] = 1;
     }
 }
