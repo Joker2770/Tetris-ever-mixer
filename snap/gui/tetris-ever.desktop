@@ -1,7 +1,7 @@
 [Desktop Entry]
-Version=20.20.12
+Version=20.21.02
 Encoding=UTF-8
-Name=sdl2snake
+Name=tetris-ever
 Comment=a simple tetris game writen with C, and render by SDL2.
 Exec=tetris-ever
 Terminal=false
