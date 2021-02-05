@@ -135,6 +135,8 @@ int main(int argc, char *argv[])
 			p_shape_data_t shape_data = &gShape;
 			int i_mode = 0;
 			unsigned int i_lines = 0;
+			unsigned int i_score = 0;
+			unsigned int i_level = 0;
 			u_int16_t i_seed = 0;
 			init_game(0, shape_data);
 
@@ -191,6 +193,8 @@ int main(int argc, char *argv[])
 					}
 				}
 
+				i_level = 1 + i_lines / 10;
+
 				if (i_offset == 2)
 				{
 					if (!check_collision(shape_data, i_offset))
@@ -211,9 +215,9 @@ int main(int argc, char *argv[])
 				render_rock(shape_data->x*10, shape_data->y*10, shape_data->cur_bit, true);
 				SDL_RenderPresent(gRenderer);
 				#ifdef _win
-				Sleep(1000);
+				Sleep(1000*(1 - 1/(i_level+4)));
 				#else
-				usleep(1000000);
+				usleep(1000000*(1 - 1/(i_level+4)));
 				#endif
 				render_rock(shape_data->x*10, shape_data->y*10, shape_data->cur_bit, false);
 				SDL_RenderPresent(gRenderer);
@@ -254,21 +258,67 @@ int main(int argc, char *argv[])
 					if (i_count > 0)
 					{
 						i_lines += i_count;
-						char sTmp[16] = "";
-						memset(sTmp, 0, sizeof(sTmp));
+						i_score += i_level*i_count*10;
+						char sTmp_lines[16] = "";
+						memset(sTmp_lines, 0, sizeof(sTmp_lines));
+						char sTmp_score[16] = "";
+						memset(sTmp_score, 0, sizeof(sTmp_score));
+						char sTmp_level[16] = "";
+						memset(sTmp_level, 0, sizeof(sTmp_level));
+						//lines
 						if (i_lines < 10)
 						{
-							sprintf(sTmp, "        %d", i_lines);
+							sprintf(sTmp_lines, "        %d", i_lines);
 						}
 						else if (i_lines < 100)
 						{
-							sprintf(sTmp, "      %d", i_lines);
+							sprintf(sTmp_lines, "      %d", i_lines);
 						}
 						else if (i_lines < 1000)
 						{
-							sprintf(sTmp, "    %d", i_lines);
+							sprintf(sTmp_lines, "    %d", i_lines);
 						}
-						render_font(gRenderer, gFont, sTmp, DEEP_COLOR, LIGHT_COLOR, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
+						else if (i_lines < 10000)
+						{
+							sprintf(sTmp_lines, "  %d", i_lines);
+						}
+						else
+						{
+							sprintf(sTmp_lines, "%d", i_lines);
+						}
+						//score
+						if (i_score < 10)
+						{
+							sprintf(sTmp_score, "        %d", i_score);
+						}
+						else if (i_score < 100)
+						{
+							sprintf(sTmp_score, "      %d", i_score);
+						}
+						else if (i_score < 1000)
+						{
+							sprintf(sTmp_score, "    %d", i_score);
+						}
+						else if (i_score < 10000)
+						{
+							sprintf(sTmp_score, "  %d", i_score);
+						}
+						else
+						{
+							sprintf(sTmp_score, "%d", i_score);
+						}
+						//level
+						if (i_level < 10)
+						{
+							sprintf(sTmp_level, "  %d", i_level);
+						}
+						else
+						{
+							sprintf(sTmp_level, "%d", i_level);
+						}
+						render_font(gRenderer, gFont, sTmp_score, DEEP_COLOR, LIGHT_COLOR, 145, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
+						render_font(gRenderer, gFont, sTmp_lines, DEEP_COLOR, LIGHT_COLOR, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
+						render_font(gRenderer, gFont, sTmp_level, DEEP_COLOR, LIGHT_COLOR, 175, 90, NULL, 0.0, NULL, SDL_FLIP_NONE);
 						SDL_RenderPresent(gRenderer);
 					}
 
