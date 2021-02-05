@@ -89,7 +89,7 @@ void init_game(int, p_shape_data_t);
 void restart_game(void);
 void fix_rock(p_shape_data_t);
 bool check_collision(p_shape_data_t, int);
-uint16_t rotate_rock(int, int, p_shape_data_t);
-void check_erasing(void);
+uint16_t rotate_rock(int, uint16_t, p_shape_data_t);
+uint16_t check_erasing(void);
 
 #endif

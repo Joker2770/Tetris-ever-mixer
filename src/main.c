@@ -134,6 +134,8 @@ int main(int argc, char *argv[])
 			shape_data_t gShape;
 			p_shape_data_t shape_data = &gShape;
 			int i_mode = 0;
+			int i_lines = 0;
+			u_int16_t i_seed = 0;
 			init_game(0, shape_data);
 
 			//Main loop flag
@@ -159,6 +161,18 @@ int main(int argc, char *argv[])
 					{
 						switch (e.key.keysym.sym)
 						{
+						case SDLK_UP:
+							if (i_seed > 65534)
+							{
+								i_seed = 0;
+							}
+							i_seed++;
+							//If crash 'left' 'right' or 'down'
+							if (!check_collision(shape_data, 1) && !check_collision(shape_data, 2) && !check_collision(shape_data, 2))
+								rotate_rock(i_mode, i_seed, shape_data);
+							else
+								i_seed--;
+							break;
 						case SDLK_DOWN:
 							i_offset = 3;
 							break;
@@ -189,7 +203,7 @@ int main(int argc, char *argv[])
 				}
 				else if (i_offset == 3)
 				{
-					while(!check_collision(shape_data, i_offset))
+					while (!check_collision(shape_data, 3))
 						shape_data->y++;
 				}
 
@@ -207,7 +221,28 @@ int main(int argc, char *argv[])
 				if (check_collision(shape_data, 3))
 				{
 					fix_rock(shape_data);
-					
+					uint16_t i_count = check_erasing();
+					if (i_count > 0)
+					{
+						i_lines += i_count;
+						char sTmp[16] = "";
+						memset(sTmp, 0, sizeof(sTmp));
+						if (i_lines < 10)
+						{
+							sprintf(sTmp, "        %d", i_lines);
+						}
+						else if (i_lines < 100)
+						{
+							sprintf(sTmp, "      %d", i_lines);
+						}
+						else if (i_lines < 1000)
+						{
+							sprintf(sTmp, "    %d", i_lines);
+						}
+						render_font(gRenderer, gFont, sTmp, DEEP_COLOR, LIGHT_COLOR, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
+						//SDL_RenderPresent(gRenderer);
+					}
+
 					//Render game area
 					for (int i = 1; i <= 20; i++)
 					{
@@ -222,7 +257,9 @@ int main(int argc, char *argv[])
 
 					render_rock(135, 125, shape_data->next_bit, false);
 					SDL_RenderPresent(gRenderer);
-
+					
+					//init rotation
+					i_seed = 0;
 					shape_data->cur_shape_line = shape_data->next_shape_line;
 					shape_data->cur_bit = shape_data->next_bit;
 					shape_data->next_shape_line = rand()%7;
@@ -232,6 +269,25 @@ int main(int argc, char *argv[])
 						shape_data->next_bit = TGM[shape_data->next_shape_line][0];
 					shape_data->x = 4;
 					shape_data->y = 1;
+					if (check_collision(shape_data, 3))
+					{
+						while (!quit)
+						{
+							//Handle events on queue
+							while (SDL_PollEvent(&e) != 0)
+							{
+								//User requests quit
+								if (e.type == SDL_QUIT)
+								{
+									quit = true;
+								}
+							}
+
+							i_lines = 0;
+							render_font(gRenderer, gFont, "Game Over!", LIGHT_COLOR, DEEP_COLOR, 25, 100, NULL, 0.0, NULL, SDL_FLIP_NONE);
+							SDL_RenderPresent(gRenderer);
+						}
+					}
 				}
 				else
 					shape_data->y++;

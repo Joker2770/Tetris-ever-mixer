@@ -63,9 +63,12 @@ void init_game(int i_mode, p_shape_data_t shapeData)
     }
 }
 
-uint16_t rotate_rock(int i_mode , int i_seed, p_shape_data_t shapeData)
+uint16_t rotate_rock(int i_mode , uint16_t i_seed, p_shape_data_t shapeData)
 {
-    return i_mode == 0 ? SRS[shapeData->cur_shape_line][i_seed&3] : TGM[shapeData->cur_shape_line][i_seed&3];
+    if (i_mode == 0)
+        shapeData->cur_bit = SRS[shapeData->cur_shape_line][i_seed&3];
+    else
+        shapeData->cur_bit = TGM[shapeData->cur_shape_line][i_seed&3];
 }
 
 bool check_collision(p_shape_data_t shapeData, int offset)
@@ -87,84 +90,43 @@ bool check_collision(p_shape_data_t shapeData, int offset)
     //check left
     if ((offset & 3) == 2)
     {
-        int colum_of_leftmost = 3;
-        bool bFlag = false;
-        for (int x = 0; x < 4; x++)
+        int iFlag = 0;
+        for (int x = 3; x >= 0; x--)
         {
             for (int y = 0; y < 4; y++)
             {
-                if (pos[x][y] | 0 == 1)
-                {
-                    bFlag = true;
-                    break;
-                }
+                iFlag |= (GMPOOL[shapeData->x + x - 1][shapeData->y + y]) & (pos[x][y]);
+                if (iFlag == 1)
+                    return true;
             }
-            if (bFlag)
-            {
-                colum_of_leftmost = x;
-                break;
-            }
-        }
-        printf("colum_of_leftmost: %d\n", colum_of_leftmost);
-        for (int i = 0; i < 4; i++)
-        {
-            if (GMPOOL[shapeData->x - 1 + colum_of_leftmost][shapeData->y + i]&pos[colum_of_leftmost][i] == 1)
-                return true;
         }
     }
     //check down
     else if ((offset & 3) == 3)
     {
-        int row_of_bottom = 3;
-        bool bFlag = false;
-        for (int y = 3; y >= 0; y--)
+        int iFlag = 0;
+        for (int x = 0; x < 4; x++)
         {
-            for (int x = 0; x < 4; x++)
+            for (int y = 0; y < 4; y++)
             {
-                if (pos[x][y] | 0 == 1)
-                {
-                    bFlag = true;
-                    break;
-                }
+                iFlag |= (GMPOOL[shapeData->x + x][shapeData->y + y + 1]) & (pos[x][y]);
+                if (iFlag == 1)
+                    return true;
             }
-            if (bFlag)
-            {
-                row_of_bottom = y;
-                break;
-            }
-        }
-        for (int i = 0; i < 4; i++)
-        {
-            if ((GMPOOL[shapeData->x + i][shapeData->y + row_of_bottom + 1])&(pos[i][row_of_bottom]) == 1)
-                return true;
         }
     }
     //check right
     else if ((offset & 3) == 1)
     {
-        int colum_of_rightmost = 3;
-        bool bFlag = false;
-        for (int x = 3; x >= 0; x--)
+        int iFlag = 0;
+        for (int x = 0; x < 4; x++)
         {
             for (int y = 0; y < 4; y++)
             {
-                if (pos[x][y] | 0 == 1)
-                {
-                    bFlag = true;
-                    break;
-                }
+                iFlag |= (GMPOOL[shapeData->x + x + 1][shapeData->y + y]) & (pos[x][y]);
+                if (iFlag == 1)
+                    return true;
             }
-            if (bFlag)
-            {
-                colum_of_rightmost = x;
-                break;
-            }
-        }
-        printf("colum_of_rightmost: %d\n", colum_of_rightmost);
-        for (int i = 0; i < 4; i++)
-        {
-            if (GMPOOL[shapeData->x + colum_of_rightmost + 1][shapeData->y + i]&pos[colum_of_rightmost][i] == 1)
-                return true;
         }
     }
     else
@@ -175,8 +137,9 @@ bool check_collision(p_shape_data_t shapeData, int offset)
     return false;
 }
 
-void check_erasing()
+uint16_t check_erasing()
 {
+    uint16_t iCount = 0;
     for (int i = 1; i <= 20; i++)
     {
         int i_flag = 1;
@@ -186,13 +149,17 @@ void check_erasing()
         }
         if (i_flag == 1)
         {
+            iCount++;
             for (int m = i; m > 1; m--)
             {
                 for (int n = 1; n <= 10; n++)
-                    GMPOOL[n][m] = GMPOOL[n][m-1];
+                {
+                    GMPOOL[n][m] = GMPOOL[n][m - 1];
+                }
             }
         }
     }
+    return iCount;
 }
 
 void fix_rock(p_shape_data_t shapeData)
