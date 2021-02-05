@@ -138,7 +138,14 @@ int main(int argc, char *argv[])
 			unsigned int i_score = 0;
 			unsigned int i_level = 0;
 			u_int16_t i_seed = 0;
-			init_game(0, shape_data);
+			bool bPause = false;
+
+			if (argc >= 2)
+			{
+				i_mode = atoi(argv[1]);
+				printf("i_mode: %d\n", i_mode);
+			}
+			init_game(i_mode, shape_data);
 
 			//Main loop flag
 			bool quit = false;
@@ -177,14 +184,23 @@ int main(int argc, char *argv[])
 							break;
 						case SDLK_DOWN:
 							i_offset = 3;
+							while (!check_collision(shape_data, 3))
+								shape_data->y++;
 							break;
 						case SDLK_LEFT:
 							i_offset = 2;
+							if (!check_collision(shape_data, i_offset))
+								shape_data->x--;
 							break;
 						case SDLK_RIGHT:
 							i_offset = 1;
+							if (!check_collision(shape_data, i_offset))
+								shape_data->x++;
 							break;
 						case SDLK_q:
+							quit = true;
+							break;
+						case SDLK_ESCAPE:
 							quit = true;
 							break;
 						default:
@@ -195,31 +211,15 @@ int main(int argc, char *argv[])
 
 				i_level = 1 + i_lines / 10;
 
-				if (i_offset == 2)
-				{
-					if (!check_collision(shape_data, i_offset))
-						shape_data->x--;
-				}
-				else if (i_offset == 1)
-				{
-					if (!check_collision(shape_data, i_offset))
-						shape_data->x++;
-				}
-				else if (i_offset == 3)
-				{
-					while (!check_collision(shape_data, 3))
-						shape_data->y++;
-				}
-
 				render_rock(135, 125, shape_data->next_bit, true);
-				render_rock(shape_data->x*10, shape_data->y*10, shape_data->cur_bit, true);
+				render_rock(shape_data->x * 10, shape_data->y * 10, shape_data->cur_bit, true);
 				SDL_RenderPresent(gRenderer);
-				#ifdef _win
-				Sleep(1000*(1 - 1/(i_level+4)));
-				#else
-				usleep(1000000*(1 - 1/(i_level+4)));
-				#endif
-				render_rock(shape_data->x*10, shape_data->y*10, shape_data->cur_bit, false);
+#ifdef _win
+				Sleep(1000 * (1 - i_level / (i_level + 4)));
+#else
+				usleep(1000000 * (1 - i_level / (i_level + 4)));
+#endif
+				render_rock(shape_data->x * 10, shape_data->y * 10, shape_data->cur_bit, false);
 				SDL_RenderPresent(gRenderer);
 
 				if (check_collision(shape_data, 3))
@@ -258,7 +258,7 @@ int main(int argc, char *argv[])
 					if (i_count > 0)
 					{
 						i_lines += i_count;
-						i_score += i_level*i_count*10;
+						i_score += i_level * i_count * 10;
 						char sTmp_lines[16] = "";
 						memset(sTmp_lines, 0, sizeof(sTmp_lines));
 						char sTmp_score[16] = "";
@@ -324,12 +324,12 @@ int main(int argc, char *argv[])
 
 					render_rock(135, 125, shape_data->next_bit, false);
 					SDL_RenderPresent(gRenderer);
-					
+
 					//init rotation
 					i_seed = 0;
 					shape_data->cur_shape_line = shape_data->next_shape_line;
 					shape_data->cur_bit = shape_data->next_bit;
-					shape_data->next_shape_line = rand()%7;
+					shape_data->next_shape_line = rand() % 7;
 					if (i_mode == 0)
 						shape_data->next_bit = SRS[shape_data->next_shape_line][0];
 					else
@@ -348,9 +348,26 @@ int main(int argc, char *argv[])
 								{
 									quit = true;
 								}
+								else if (e.type == SDL_KEYDOWN)
+								{
+									switch (e.key.keysym.sym)
+									{
+									case SDLK_q:
+										quit = true;
+										break;
+									case SDLK_ESCAPE:
+										quit = true;
+										break;
+									default:
+										break;
+									}
+								}
 							}
 
 							i_lines = 0;
+							i_level = 0;
+							i_score = 0;
+							i_seed = 0;
 							render_font(gRenderer, gFont, "Game Over!", LIGHT_COLOR, DEEP_COLOR, 25, 100, NULL, 0.0, NULL, SDL_FLIP_NONE);
 							SDL_RenderPresent(gRenderer);
 						}
