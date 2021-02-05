@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 			shape_data_t gShape;
 			p_shape_data_t shape_data = &gShape;
 			int i_mode = 0;
-			int i_lines = 0;
+			unsigned int i_lines = 0;
 			u_int16_t i_seed = 0;
 			init_game(0, shape_data);
 
@@ -221,7 +221,36 @@ int main(int argc, char *argv[])
 				if (check_collision(shape_data, 3))
 				{
 					fix_rock(shape_data);
+
+					//Clear game area
+					for (int i = 1; i <= 20; i++)
+					{
+						for (int j = 1; j <= 10; j++)
+						{
+							if (GMPOOL[j][i] == 1)
+							{
+								render_rect(j * 10, i * 10, false);
+							}
+						}
+					}
+					SDL_RenderPresent(gRenderer);
+
+					//earsing
 					uint16_t i_count = check_erasing();
+
+					//Render game area
+					for (int i = 1; i <= 20; i++)
+					{
+						for (int j = 1; j <= 10; j++)
+						{
+							if (GMPOOL[j][i] == 1)
+							{
+								render_rect(j * 10, i * 10, true);
+							}
+						}
+					}
+					SDL_RenderPresent(gRenderer);
+
 					if (i_count > 0)
 					{
 						i_lines += i_count;
@@ -240,19 +269,7 @@ int main(int argc, char *argv[])
 							sprintf(sTmp, "    %d", i_lines);
 						}
 						render_font(gRenderer, gFont, sTmp, DEEP_COLOR, LIGHT_COLOR, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
-						//SDL_RenderPresent(gRenderer);
-					}
-
-					//Render game area
-					for (int i = 1; i <= 20; i++)
-					{
-						for (int j = 1; j <= 10; j++)
-						{
-							if (GMPOOL[j][i] == 1)
-							{
-								render_rect(j * 10, i * 10, true);
-							}
-						}
+						SDL_RenderPresent(gRenderer);
 					}
 
 					render_rock(135, 125, shape_data->next_bit, false);
