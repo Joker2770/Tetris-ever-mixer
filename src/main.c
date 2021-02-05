@@ -443,6 +443,11 @@ bool loadMedia()
 	if (gFont == NULL)
 	{
 		printf("Failed to load TTF font: %s\n", TTF_GetError());
+		gFont = TTF_OpenFont("/usr/local/bin/bb3273.ttf", 12);
+		if (gFont == NULL)
+		{
+			printf("Failed to load TTF font: %s\n", TTF_GetError());
+		}
 	}
 
 	//Nothing to load
