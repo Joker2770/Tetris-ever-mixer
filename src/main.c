@@ -30,7 +30,7 @@ SOFTWARE. */
 #include "tetris.h"
 #include "config.h"
 
-#ifdef _win
+#ifdef _MSC_VER
 #include <windows.h>
 #else
 #include <unistd.h>
@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
 			unsigned int i_lines = 0;
 			unsigned int i_score = 0;
 			unsigned int i_level = 0;
-			u_int16_t i_seed = 0;
+			uint16_t i_seed = 0;
 			bool bPause = false;
 
 			if (argc >= 2)
@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
 				render_rock(135, 125, shape_data->next_bit, true);
 				render_rock(shape_data->x * 10, shape_data->y * 10, shape_data->cur_bit, true);
 				SDL_RenderPresent(gRenderer);
-#ifdef _win
+#ifdef _MSC_VER
 				Sleep(1000 * (1 - i_level / (i_level + 4)));
 #else
 				usleep(1000000 * (1 - i_level / (i_level + 4)));
