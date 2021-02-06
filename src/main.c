@@ -146,24 +146,27 @@ int main(int argc, char *argv[])
 					i_mode = 1;
 				else if (0 == strcmp(argv[1], "-TGM"))
 					i_mode = 2;
-				else if (0 == strcmp(argv[1], "-h") || 0 == strcmp(argv[1], "--help"))
+				else if (0 == strcmp(argv[1], "-V") || 0 == strcmp(argv[1], "--version"))
+					printf("20.21.02\n");
+				else if (0 == strcmp(argv[1], "-H") || 0 == strcmp(argv[1], "--help"))
 					printf(
-							"%s [option]\n"
-							"all options: \n"
-							"    -SRS            game mode.\n"
-							"    -TGM            game mode.\n"
-							"    -h [--help]     game control introduction.\n\n"
-							"available key control for pure keyboard:\n"
-							"* Esc - Quit current scenes.\n"
-							"* Q - Same as above.\n"
-							"* up - rotate rock.\n"
-							"* down - control rock fall down.\n"
-							"* left - control rock to left.\n"
-							"* right - control rock to right.\n"
-							, argv[0]
-							);
-				printf("\ni_mode: %d\n", i_mode);
+						"%s [option]\n"
+						"all options: \n"
+						"    -SRS            game mode.\n"
+						"    -TGM            game mode.\n"
+						"    -V [--version]  game version.\n"
+						"    -H [--help]     game control introduction.\n\n"
+						"available key control for pure keyboard:\n"
+						"* Esc - Quit current scenes.\n"
+						"* Q - Same as above.\n"
+						"* up - rotate rock.\n"
+						"* down - control rock fall down.\n"
+						"* left - control rock to left.\n"
+						"* right - control rock to right.\n"
+						, argv[0]
+					);
 			}
+			printf("\ni_mode: %d\n", i_mode);
 			init_game(i_mode, shape_data);
 
 			//Main loop flag
@@ -234,9 +237,9 @@ int main(int argc, char *argv[])
 				render_rock(shape_data->x * 10, shape_data->y * 10, shape_data->cur_bit, true);
 				SDL_RenderPresent(gRenderer);
 #ifdef _MSC_VER
-				Sleep(1000 * (1 - i_level / (i_level + 4)));
+				Sleep(1000 * (1 - i_level / (i_level + 2)));
 #else
-				usleep(1000000 * (1 - i_level / (i_level + 4)));
+				usleep(1000000 * (1 - i_level / (i_level + 2)));
 #endif
 				render_rock(shape_data->x * 10, shape_data->y * 10, shape_data->cur_bit, false);
 				SDL_RenderPresent(gRenderer);
