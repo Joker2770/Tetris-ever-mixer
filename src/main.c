@@ -140,10 +140,29 @@ int main(int argc, char *argv[])
 			uint16_t i_seed = 0;
 			bool bPause = false;
 
-			if (argc >= 2)
+			if (argc == 2)
 			{
-				i_mode = atoi(argv[1]);
-				printf("i_mode: %d\n", i_mode);
+				if (0 == strcmp(argv[1], "-SRS"))
+					i_mode = 1;
+				else if (0 == strcmp(argv[1], "-TGM"))
+					i_mode = 2;
+				else if (0 == strcmp(argv[1], "-h") || 0 == strcmp(argv[1], "--help"))
+					printf(
+							"%s [option]\n"
+							"all options: \n"
+							"    -SRS            game mode.\n"
+							"    -TGM            game mode.\n"
+							"    -h [--help]     game control introduction.\n\n"
+							"available key control for pure keyboard:\n"
+							"* Esc - Quit current scenes.\n"
+							"* Q - Same as above.\n"
+							"* up - rotate rock.\n"
+							"* down - control rock fall down.\n"
+							"* left - control rock to left.\n"
+							"* right - control rock to right.\n"
+							, argv[0]
+							);
+				printf("\ni_mode: %d\n", i_mode);
 			}
 			init_game(i_mode, shape_data);
 
@@ -268,53 +287,53 @@ int main(int argc, char *argv[])
 						//lines
 						if (i_lines < 10)
 						{
-							sprintf(sTmp_lines, "        %d", i_lines);
+							sprintf(sTmp_lines, "        %u", i_lines);
 						}
 						else if (i_lines < 100)
 						{
-							sprintf(sTmp_lines, "      %d", i_lines);
+							sprintf(sTmp_lines, "      %u", i_lines);
 						}
 						else if (i_lines < 1000)
 						{
-							sprintf(sTmp_lines, "    %d", i_lines);
+							sprintf(sTmp_lines, "    %u", i_lines);
 						}
 						else if (i_lines < 10000)
 						{
-							sprintf(sTmp_lines, "  %d", i_lines);
+							sprintf(sTmp_lines, "  %u", i_lines);
 						}
 						else
 						{
-							sprintf(sTmp_lines, "%d", i_lines);
+							sprintf(sTmp_lines, "%u", i_lines);
 						}
 						//score
 						if (i_score < 10)
 						{
-							sprintf(sTmp_score, "        %d", i_score);
+							sprintf(sTmp_score, "        %u", i_score);
 						}
 						else if (i_score < 100)
 						{
-							sprintf(sTmp_score, "      %d", i_score);
+							sprintf(sTmp_score, "      %u", i_score);
 						}
 						else if (i_score < 1000)
 						{
-							sprintf(sTmp_score, "    %d", i_score);
+							sprintf(sTmp_score, "    %u", i_score);
 						}
 						else if (i_score < 10000)
 						{
-							sprintf(sTmp_score, "  %d", i_score);
+							sprintf(sTmp_score, "  %u", i_score);
 						}
 						else
 						{
-							sprintf(sTmp_score, "%d", i_score);
+							sprintf(sTmp_score, "%u", i_score);
 						}
 						//level
 						if (i_level < 10)
 						{
-							sprintf(sTmp_level, "  %d", i_level);
+							sprintf(sTmp_level, "  %u", i_level);
 						}
 						else
 						{
-							sprintf(sTmp_level, "%d", i_level);
+							sprintf(sTmp_level, "%u", i_level);
 						}
 						render_font(gRenderer, gFont, sTmp_score, DEEP_COLOR, LIGHT_COLOR, 145, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
 						render_font(gRenderer, gFont, sTmp_lines, DEEP_COLOR, LIGHT_COLOR, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
@@ -439,11 +458,11 @@ bool loadMedia()
 	//Loading success flag
 	bool success = true;
 
-	gFont = TTF_OpenFont("bb3273.ttf", 12);
+	gFont = TTF_OpenFont("/usr/local/bin/bb3273.ttf", 12);
 	if (gFont == NULL)
 	{
 		printf("Failed to load TTF font: %s\n", TTF_GetError());
-		gFont = TTF_OpenFont("/usr/local/bin/bb3273.ttf", 12);
+		gFont = TTF_OpenFont("bb3273.ttf", 12);
 		if (gFont == NULL)
 		{
 			printf("Failed to load TTF font: %s\n", TTF_GetError());

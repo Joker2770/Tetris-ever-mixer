@@ -53,13 +53,13 @@ void init_game(int i_mode, p_shape_data_t shapeData)
     shapeData->next_shape_line = rand()%7;
     if (i_mode == 1)
     {
-        shapeData->cur_bit = SRS[shapeData->cur_shape_line][rand()%4];
-        shapeData->next_bit = SRS[shapeData->next_shape_line][rand()%4];
+        shapeData->cur_bit = SRS[shapeData->cur_shape_line][0];
+        shapeData->next_bit = SRS[shapeData->next_shape_line][0];
     }
     else
     {
-        shapeData->cur_bit = TGM[shapeData->cur_shape_line][rand()%4];
-        shapeData->next_bit = TGM[shapeData->next_shape_line][rand()%4];
+        shapeData->cur_bit = TGM[shapeData->cur_shape_line][0];
+        shapeData->next_bit = TGM[shapeData->next_shape_line][0];
     }
 }
 
