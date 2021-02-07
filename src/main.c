@@ -53,34 +53,33 @@ void render_rect(int x, int y, bool isDeep);
 void render_rock(int x, int y, uint16_t CAC, bool isDeep);
 
 //Render font
-void render_font(SDL_Renderer* sRenderer,
-				TTF_Font* font,
-				const char* textureText,
-				SDL_Color textColor,
-				SDL_Color bgColor,
-				int x,
-				int y,
-				SDL_Rect* clip,
-				double angle,
-				SDL_Point* center,
-				SDL_RendererFlip flip
-				);
+void render_font(SDL_Renderer *sRenderer,
+				 TTF_Font *font,
+				 const char *textureText,
+				 SDL_Color textColor,
+				 SDL_Color bgColor,
+				 int x,
+				 int y,
+				 SDL_Rect *clip,
+				 double angle,
+				 SDL_Point *center,
+				 SDL_RendererFlip flip);
 
 //Frees media and shuts down SDL
 void closeAll();
 
 //The window we'll be rendering to
-SDL_Window* gWindow = NULL;
+SDL_Window *gWindow = NULL;
 
 //The window renderer
-SDL_Renderer* gRenderer = NULL;
+SDL_Renderer *gRenderer = NULL;
 
 //Font
 TTF_Font *gFont = NULL;
 
 int main(int argc, char *argv[])
 {
-    srand((unsigned)time(NULL));
+	srand((unsigned)time(NULL));
 
 	if (!init())
 	{
@@ -162,9 +161,8 @@ int main(int argc, char *argv[])
 						"* up - rotate rock.\n"
 						"* down - control rock fall down.\n"
 						"* left - control rock to left.\n"
-						"* right - control rock to right.\n"
-						, argv[0]
-					);
+						"* right - control rock to right.\n",
+						argv[0]);
 			}
 			printf("\ni_mode: %d\n", i_mode);
 			init_game(i_mode, shape_data);
@@ -449,7 +447,6 @@ bool init()
 					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 				}
 			}
-
 		}
 	}
 
@@ -479,7 +476,7 @@ bool loadMedia()
 void render_rect(int x, int y, bool isDeep)
 {
 	//Render filled quad
-	SDL_Rect outline_rect = {x + 1 , y + 1, 8, 8};
+	SDL_Rect outline_rect = {x + 1, y + 1, 8, 8};
 	SDL_Rect fill_rect = {x + 3, y + 3, 4, 4};
 	if (isDeep)
 		SDL_SetRenderDrawColor(gRenderer, DEEP_COLOR.r, DEEP_COLOR.g, DEEP_COLOR.b, DEEP_COLOR.a);
@@ -492,28 +489,27 @@ void render_rect(int x, int y, bool isDeep)
 void render_rock(int x, int y, uint16_t CAC, bool isDeep)
 {
 	int P[4] = {0, 0, 0, 0};
-	for(int j=0;j<=3;j++)
+	for (int j = 0; j <= 3; j++)
 	{
-		P[j] = CAC&0xF, CAC>>=4;
-		render_rect((P[j]>>2) * 10 + x, (P[j]&0x3) * 10 + y, isDeep);
+		P[j] = CAC & 0xF, CAC >>= 4;
+		render_rect((P[j] >> 2) * 10 + x, (P[j] & 0x3) * 10 + y, isDeep);
 	}
 }
 
-void render_font(SDL_Renderer* sRenderer,
-				TTF_Font* font,
-				const char* textureText,
-				SDL_Color textColor,
-				SDL_Color bgColor,
-				int x,
-				int y,
-				SDL_Rect* clip,
-				double angle,
-				SDL_Point* center,
-				SDL_RendererFlip flip
-				)
+void render_font(SDL_Renderer *sRenderer,
+				 TTF_Font *font,
+				 const char *textureText,
+				 SDL_Color textColor,
+				 SDL_Color bgColor,
+				 int x,
+				 int y,
+				 SDL_Rect *clip,
+				 double angle,
+				 SDL_Point *center,
+				 SDL_RendererFlip flip)
 {
 	//Render text surface
-	SDL_Surface* textSurface = TTF_RenderText_Solid(font, textureText, textColor);
+	SDL_Surface *textSurface = TTF_RenderText_Solid(font, textureText, textColor);
 	if (textSurface == NULL)
 	{
 		printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
@@ -522,7 +518,7 @@ void render_font(SDL_Renderer* sRenderer,
 	{
 
 		//The actual hardware texture
-		SDL_Texture* texture = NULL;
+		SDL_Texture *texture = NULL;
 
 		//Create texture from surface pixels
 		texture = SDL_CreateTextureFromSurface(sRenderer, textSurface);
@@ -533,7 +529,7 @@ void render_font(SDL_Renderer* sRenderer,
 		else
 		{
 			//Set rendering space and render to screen
-			SDL_Rect renderQuad = { x, y, textSurface->w, textSurface->h};
+			SDL_Rect renderQuad = {x, y, textSurface->w, textSurface->h};
 
 			//Set clip rendering dimensions
 			if (clip != NULL)
@@ -541,7 +537,7 @@ void render_font(SDL_Renderer* sRenderer,
 				renderQuad.w = clip->w;
 				renderQuad.h = clip->h;
 			}
-			
+
 			SDL_SetRenderDrawColor(sRenderer, bgColor.r, bgColor.g, bgColor.b, bgColor.a);
 			SDL_RenderFillRect(sRenderer, &renderQuad);
 
@@ -584,4 +580,3 @@ void closeAll()
 	TTF_Quit();
 	SDL_Quit();
 }
-

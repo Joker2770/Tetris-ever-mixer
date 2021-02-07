@@ -49,8 +49,8 @@ void init_game(int i_mode, p_shape_data_t shapeData)
 
     shapeData->x = 4;
     shapeData->y = 1;
-    shapeData->cur_shape_line = rand()%7;
-    shapeData->next_shape_line = rand()%7;
+    shapeData->cur_shape_line = rand() % 7;
+    shapeData->next_shape_line = rand() % 7;
     if (i_mode == 1)
     {
         shapeData->cur_bit = SRS[shapeData->cur_shape_line][0];
@@ -63,29 +63,29 @@ void init_game(int i_mode, p_shape_data_t shapeData)
     }
 }
 
-uint16_t rotate_rock(int i_mode , uint16_t i_seed, p_shape_data_t shapeData)
+uint16_t rotate_rock(int i_mode, uint16_t i_seed, p_shape_data_t shapeData)
 {
     if (i_mode == 1)
-        shapeData->cur_bit = SRS[shapeData->cur_shape_line][i_seed&3];
+        shapeData->cur_bit = SRS[shapeData->cur_shape_line][i_seed & 3];
     else
-        shapeData->cur_bit = TGM[shapeData->cur_shape_line][i_seed&3];
+        shapeData->cur_bit = TGM[shapeData->cur_shape_line][i_seed & 3];
 }
 
 bool check_collision(p_shape_data_t shapeData, int offset)
 {
     int pos[4][4] = {
-        {0,0,0,0},
-        {0,0,0,0},
-        {0,0,0,0},
-        {0,0,0,0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
     };
-	int P[4] = {0, 0, 0, 0};
+    int P[4] = {0, 0, 0, 0};
     uint16_t u16_tmp_bit = shapeData->cur_bit;
-	for(int j=0;j<4;j++)
-	{
-		P[j] = u16_tmp_bit&0xF, u16_tmp_bit>>=4;
-        pos[P[j]>>2][P[j]&0x3] = 1;
-	}
+    for (int j = 0; j < 4; j++)
+    {
+        P[j] = u16_tmp_bit & 0xF, u16_tmp_bit >>= 4;
+        pos[P[j] >> 2][P[j] & 0x3] = 1;
+    }
 
     //check left
     if ((offset & 3) == 2)
@@ -133,7 +133,7 @@ bool check_collision(p_shape_data_t shapeData, int offset)
     {
         return false;
     }
-    
+
     return false;
 }
 
@@ -168,7 +168,7 @@ void fix_rock(p_shape_data_t shapeData)
     uint16_t u16_tmp_bit = shapeData->cur_bit;
     for (int i = 0; i < 4; i++)
     {
-        P[i] = u16_tmp_bit&0xF, u16_tmp_bit>>=4;
-        GMPOOL[shapeData->x + (P[i]>>2)][shapeData->y + (P[i]&0x3)] = 1;
+        P[i] = u16_tmp_bit & 0xF, u16_tmp_bit >>= 4;
+        GMPOOL[shapeData->x + (P[i] >> 2)][shapeData->y + (P[i] & 0x3)] = 1;
     }
 }
