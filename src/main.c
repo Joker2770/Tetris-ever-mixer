@@ -189,16 +189,16 @@ int main(int argc, char *argv[])
 						switch (e.key.keysym.sym)
 						{
 						case SDLK_UP:
-							if (i_seed > 65534)
-							{
+							if (i_seed >= 65534)
 								i_seed = 0;
-							}
 							i_seed++;
-							//If crash 'left' 'right' or 'down'
-							if (!check_collision(shape_data, 1) && !check_collision(shape_data, 2) && !check_collision(shape_data, 3))
-								rotate_rock(i_mode, i_seed, shape_data);
-							else
+							rotate_rock(i_mode, i_seed, shape_data);
+							//If crash 'down'
+							if (check_collision(shape_data, 3))
+							{
 								i_seed--;
+								rotate_rock(i_mode, i_seed, shape_data);
+							}
 							break;
 						case SDLK_DOWN:
 							while (!check_collision(shape_data, 3))
