@@ -176,8 +176,6 @@ int main(int argc, char *argv[])
 			//While application is running
 			while (!quit)
 			{
-				int i_offset = 0;
-
 				//Handle events on queue
 				while (SDL_PollEvent(&e) != 0)
 				{
@@ -197,24 +195,21 @@ int main(int argc, char *argv[])
 							}
 							i_seed++;
 							//If crash 'left' 'right' or 'down'
-							if (!check_collision(shape_data, 1) && !check_collision(shape_data, 2) && !check_collision(shape_data, 2))
+							if (!check_collision(shape_data, 1) && !check_collision(shape_data, 2) && !check_collision(shape_data, 3))
 								rotate_rock(i_mode, i_seed, shape_data);
 							else
 								i_seed--;
 							break;
 						case SDLK_DOWN:
-							i_offset = 3;
 							while (!check_collision(shape_data, 3))
 								shape_data->y++;
 							break;
 						case SDLK_LEFT:
-							i_offset = 2;
-							if (!check_collision(shape_data, i_offset))
+							if (!check_collision(shape_data, 2))
 								shape_data->x--;
 							break;
 						case SDLK_RIGHT:
-							i_offset = 1;
-							if (!check_collision(shape_data, i_offset))
+							if (!check_collision(shape_data, 1))
 								shape_data->x++;
 							break;
 						case SDLK_q:
