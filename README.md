@@ -1,4 +1,5 @@
 # Tetris-ever
+An simple tetris game writen with C, and be render by SDL2.
 
 ## Dependencies
 Required:
