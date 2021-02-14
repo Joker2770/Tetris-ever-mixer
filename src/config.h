@@ -36,10 +36,12 @@ SOFTWARE. */
 //Windows
 #include "SDL.h"
 #include "SDL_ttf.h"
+#include "SDL_mixer.h"
 #else
 //Linux...
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #endif
 
 //window defination

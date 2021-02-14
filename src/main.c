@@ -77,6 +77,9 @@ SDL_Renderer *gRenderer = NULL;
 //Font
 TTF_Font *gFont = NULL;
 
+//The music that will be played
+Mix_Music *gMusic = NULL;
+
 int main(int argc, char *argv[])
 {
 	srand((unsigned)time(NULL));
@@ -120,6 +123,7 @@ int main(int argc, char *argv[])
 			render_font(gRenderer, gFont, "        0", DEEP_COLOR, LIGHT_COLOR, 145, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
 			render_font(gRenderer, gFont, "        0", DEEP_COLOR, LIGHT_COLOR, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
 			render_font(gRenderer, gFont, "  1", DEEP_COLOR, LIGHT_COLOR, 175, 90, NULL, 0.0, NULL, SDL_FLIP_NONE);
+			//render_font(gRenderer, gFont, "M", DEEP_COLOR, BG_COLOR, 125, 200, NULL, 0.0, NULL, SDL_FLIP_NONE);
 
 			//Render next area
 			for (int i = 0; i < 4; i++)
@@ -161,11 +165,22 @@ int main(int argc, char *argv[])
 						"* up - rotate rock.\n"
 						"* down - control rock fall down.\n"
 						"* left - control rock to left.\n"
-						"* right - control rock to right.\n",
+						"* right - control rock to right.\n"
+						"* 9 - play/pause the music.\n"
+						"* 0 - halt music.\n",
 						argv[0]);
 			}
 			printf("\ni_mode: %d\n", i_mode);
 			init_game(i_mode, shape_data);
+
+			//If there is no music playing
+			if (Mix_PlayingMusic() == 0)
+			{
+				//Play the music
+				Mix_PlayMusic(gMusic, -1);
+				render_font(gRenderer, gFont, "M", DEEP_COLOR, BG_COLOR, 125, 200, NULL, 0.0, NULL, SDL_FLIP_NONE);
+				SDL_RenderPresent(gRenderer);
+			}
 
 			//Main loop flag
 			bool quit = false;
@@ -217,6 +232,42 @@ int main(int argc, char *argv[])
 							break;
 						case SDLK_ESCAPE:
 							quit = true;
+						break;
+						case SDLK_9:
+							//If there is no music playing
+							if (Mix_PlayingMusic() == 0)
+							{
+								//Play the music
+								Mix_PlayMusic(gMusic, -1);
+								render_font(gRenderer, gFont, "M", DEEP_COLOR, BG_COLOR, 125, 200, NULL, 0.0, NULL, SDL_FLIP_NONE);
+								SDL_RenderPresent(gRenderer);
+							}
+							//If music is being played
+							else
+							{
+								//If the music is paused
+								if (Mix_PausedMusic() == 1)
+								{
+									//Resume the music
+									Mix_ResumeMusic();
+									render_font(gRenderer, gFont, "M", DEEP_COLOR, BG_COLOR, 125, 200, NULL, 0.0, NULL, SDL_FLIP_NONE);
+									SDL_RenderPresent(gRenderer);
+								}
+								//If the music is playing
+								else
+								{
+									//Pause the music
+									Mix_PauseMusic();
+									render_font(gRenderer, gFont, "M", LIGHT_COLOR, BG_COLOR, 125, 200, NULL, 0.0, NULL, SDL_FLIP_NONE);
+									SDL_RenderPresent(gRenderer);
+								}
+							}
+							break;
+						case SDLK_0:
+							//Stop the music
+							Mix_HaltMusic();
+							render_font(gRenderer, gFont, "M", LIGHT_COLOR, BG_COLOR, 125, 200, NULL, 0.0, NULL, SDL_FLIP_NONE);
+							SDL_RenderPresent(gRenderer);
 							break;
 						default:
 							break;
@@ -405,7 +456,7 @@ bool init()
 	bool success = true;
 
 	//Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 		success = false;
@@ -416,6 +467,7 @@ bool init()
 		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
 		{
 			printf("Warning: Linear texture filtering not enabled!");
+			success = false;
 		}
 
 		//Create window
@@ -440,6 +492,13 @@ bool init()
 				if (TTF_Init() == -1)
 				{
 					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+					success = false;
+				}
+				//Initialize SDL_mixer
+				if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+				{
+					printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+					success = false;
 				}
 			}
 		}
@@ -461,6 +520,20 @@ bool loadMedia()
 		if (gFont == NULL)
 		{
 			printf("Failed to load TTF font: %s\n", TTF_GetError());
+			success = false;
+		}
+	}
+
+	//Load music
+	gMusic = Mix_LoadMUS("/usr/local/bin/tetrisb.mid");
+	if (gMusic == NULL)
+	{
+		printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+		gMusic = Mix_LoadMUS("tetrisb.mid");
+		if (gMusic == NULL)
+		{
+			printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+			success = false;
 		}
 	}
 
@@ -571,7 +644,15 @@ void closeAll()
 		gWindow = NULL;
 	}
 
+	//Free the music
+	if (NULL != gMusic)
+	{
+		Mix_FreeMusic(gMusic);
+		gMusic = NULL;
+	}
+
 	//Quit SDL subsystems
+	Mix_Quit();
 	TTF_Quit();
 	SDL_Quit();
 }
