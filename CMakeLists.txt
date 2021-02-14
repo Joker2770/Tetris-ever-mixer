@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(Tetris-ever)
+project(Tetris-ever-mixer)
 set(CMAKE_C_FLAGS, "-Wall")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -14,15 +14,17 @@ if(UNIX)
 	find_package( PkgConfig REQUIRED )
 	pkg_check_modules( sdl2 REQUIRED IMPORTED_TARGET sdl2 )
 	pkg_check_modules( SDL2_ttf REQUIRED IMPORTED_TARGET SDL2_ttf )
+	pkg_check_modules( SDL2_mixer REQUIRED IMPORTED_TARGET SDL2_mixer )
 endif()
 
-include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIR})
+include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR})
 file(GLOB Tetris_SRCS "src/*.c" "src/*.h")
 add_executable(${PROJECT_NAME} ${Tetris_SRCS})
 
 if(UNIX)
 	target_link_libraries(${PROJECT_NAME} PRIVATE PkgConfig::sdl2 )
 	target_link_libraries(${PROJECT_NAME} PRIVATE PkgConfig::SDL2_ttf )
+	target_link_libraries(${PROJECT_NAME} PRIVATE PkgConfig::SDL2_mixer )
 endif()
 
 if(UNIX)

@@ -11,8 +11,10 @@
     * down - control rock fall down.
     * left - control rock to left.
     * right - control rock to right.
+    * 9 - play/pause the music.
+    * 0 - halt music.
 
-    _More detail please view code: < https://github.com/Joker2770/Tetris-ever >. _
+    _More detail please view code: < https://github.com/Joker2770/Tetris-ever-mixer >. _
 
   # icon: snap/gui/icon.png
 
@@ -22,7 +24,7 @@
   
   apps:
     tetris-ever:
-      command: usr/local/bin/Tetris-ever
+      command: usr/local/bin/Tetris-ever-mixer
       # desktop: tetris-ever.desktop
       plugs:
         - audio-playback
@@ -41,9 +43,9 @@
       # after:
         # - desktop-glib-only
       plugin: cmake
-      source: "https://github.com/Joker2770/Tetris-ever.git"
+      source: "https://github.com/Joker2770/Tetris-ever-mixer.git"
       source-depth: 1
-      source-branch: mixer
+      source-branch: main
       source-type: git
       build-packages:
         - gcc
