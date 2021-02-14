@@ -65,7 +65,12 @@
         - pulseaudio
         - pulseaudio-utils
         - libsndfile1
+        - libxcb1
+        - libasyncns0
         - libflac8
+        - libvorbisenc2
+        - libxau6
+        - libxdmcp6
         - libogg0
         - libvorbis0a
         # - libgl1-mesa-glx
