@@ -23,10 +23,11 @@
   base: core18
   
   apps:
-    tetris-ever:
+    tetris-ever-mixer:
       command: usr/local/bin/Tetris-ever-mixer
       # desktop: tetris-ever.desktop
       plugs:
+        - audio-playback
         - desktop
         - desktop-legacy
         - wayland
@@ -40,7 +41,7 @@
       bind-file: $SNAP/usr/local/bin/tetrisb.mid
     
   parts:
-    tetris-ever:
+    tetris-ever-mixer:
       # after:
         # - desktop-glib-only
       plugin: cmake
