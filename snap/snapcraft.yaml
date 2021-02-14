@@ -28,6 +28,7 @@
       # desktop: tetris-ever.desktop
       plugs:
         - audio-playback
+        - alsa
         - desktop
         - desktop-legacy
         - wayland
