@@ -63,6 +63,10 @@
         - libsdl2-ttf-2.0-0
         - libsdl2-mixer-2.0-0
         - pulseaudio
-        - alsa-utils
+        - pulseaudio-utils
+        - libsndfile1
+        - libflac8
+        - libogg0
+        - libvorbis0a
         # - libgl1-mesa-glx
         # - libglu1-mesa
