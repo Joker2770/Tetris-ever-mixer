@@ -63,19 +63,19 @@
         - libsdl2-2.0-0
         - libsdl2-ttf-2.0-0
         - libsdl2-mixer-2.0-0
-        - pulseaudio
-        - pulseaudio-utils
-        - libsndfile1
-        - libxcb1
-        - libasyncns0
-        - libflac8
-        - libmpg123
-        - libvorbisenc2
-        - libxau6
-        - libxdmcp6
-        - libogg0
-        - libvorbis0a
-        - libvorbisfile3
-        - timgm6mb-soundfont
+        # - pulseaudio
+        # - pulseaudio-utils
+        # - libsndfile1
+        # - libxcb1
+        # - libasyncns0
+        # - libflac8
+        - libmpg123-0
+        # - libvorbisenc2
+        # - libxau6
+        # - libxdmcp6
+        # - libogg0
+        # - libvorbis0a
+        # - libvorbisfile3
+        # - timgm6mb-soundfont
         # - libgl1-mesa-glx
         # - libglu1-mesa
