@@ -28,4 +28,4 @@ Tetris-ever-mixer
 git clone https://github.com/Joker2770/Tetris-ever-mixer.git
 cd Tetris-ever-mixer/msvc/
 ~~~
-Then double click 'Tetris-ever-mixer.sln', build with Visual Studio, do not forget copy 'bb3273.ttf' and 'Aaron-19-Tetris-YANGS-remix.mp3' to program directory.
+Then double click 'Tetris-ever-mixer.sln', build with Visual Studio, do not forget copy 'bb3273.ttf' and 'tetrisb.mid' to program directory.
