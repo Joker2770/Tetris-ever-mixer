@@ -28,6 +28,7 @@
       # desktop: tetris-ever.desktop
       plugs:
         - audio-playback
+        - pulseaudio
         - alsa
         - desktop
         - desktop-legacy
@@ -68,10 +69,13 @@
         - libxcb1
         - libasyncns0
         - libflac8
+        - libmpg123
         - libvorbisenc2
         - libxau6
         - libxdmcp6
         - libogg0
         - libvorbis0a
+        - libvorbisfile3
+        - timgm6mb-soundfont
         # - libgl1-mesa-glx
         # - libglu1-mesa

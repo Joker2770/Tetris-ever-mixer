@@ -525,11 +525,11 @@ bool loadMedia()
 	}
 
 	//Load music
-	gMusic = Mix_LoadMUS("/usr/local/bin/tetrisb.mid");
+	gMusic = Mix_LoadMUS("/usr/local/bin/Aaron-19-Tetris-YANGS-remix.mp3");
 	if (gMusic == NULL)
 	{
 		printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
-		gMusic = Mix_LoadMUS("tetrisb.mid");
+		gMusic = Mix_LoadMUS("Aaron-19-Tetris-YANGS-remix.mp3");
 		if (gMusic == NULL)
 		{
 			printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
