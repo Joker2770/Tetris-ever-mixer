@@ -39,7 +39,7 @@
   layout:
     /usr/local/bin/bb3273.ttf:
       bind-file: $SNAP/usr/local/bin/bb3273.ttf
-    /usr/local/bin/tetrisb.mid:
+    /usr/local/bin/Aaron-19-Tetris-YANGS-remix.mp3:
       bind-file: $SNAP/usr/local/bin/Aaron-19-Tetris-YANGS-remix.mp3
     
   parts:
