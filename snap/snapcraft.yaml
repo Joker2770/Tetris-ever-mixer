@@ -29,7 +29,7 @@
       environment:
         # pulseaudio
         LD_LIBRARY_PATH: ${SNAP}/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
-        ALSA_CONFIG_PATH: ${SNAP}/etc/asound.conf
+        # ALSA_CONFIG_PATH: ${SNAP}/etc/asound.conf
         # PULSE_SYSTEM: 1
         # PULSE_RUNTIME_PATH: /var/run/pulse
         PULSE_SERVER: unix:$XDG_RUNTIME_DIR/../pulse/native
@@ -51,8 +51,6 @@
       bind: $SNAP/usr/share/midi/freepats
     /etc/timidity:
       bind: $SNAP/etc/timidity
-    /usr/share/alsa:
-      bind: $SNAP/usr/share/alsa
     
   parts:
     tetris-ever-mixer:
