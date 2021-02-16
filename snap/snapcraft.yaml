@@ -51,6 +51,8 @@
       bind: $SNAP/usr/share/midi/freepats
     /etc/timidity:
       bind: $SNAP/etc/timidity
+    /usr/share/alsa:
+      bind: $SNAP/usr/share/alsa
     
   parts:
     tetris-ever-mixer:
