@@ -232,7 +232,7 @@ int main(int argc, char *argv[])
 							break;
 						case SDLK_ESCAPE:
 							quit = true;
-						break;
+							break;
 						case SDLK_9:
 							//If there is no music playing
 							if (Mix_PlayingMusic() == 0)
