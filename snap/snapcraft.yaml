@@ -90,16 +90,16 @@
         - libsdl2-ttf-2.0-0
         - libsdl2-mixer-2.0-0
         - libfluidsynth2
-        # - freepats
+        - freepats
         - libmodplug1
         - libopusfile0
         - libpulse0
         - libsndfile1
-        - libasound2
-        - libasound2-plugins
         - libvorbis0a
         - libvorbisfile3
         - libvorbisenc2
+        # - libasound2
+        # - libasound2-plugins
         # - libxcursor1
         # - libxi6
         # - libxinerama1
