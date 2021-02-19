@@ -333,55 +333,32 @@ int main(int argc, char *argv[])
 						memset(sTmp_level, 0, sizeof(sTmp_level));
 						//lines
 						if (i_lines < 10)
-						{
 							sprintf(sTmp_lines, "        %u", i_lines);
-						}
 						else if (i_lines < 100)
-						{
 							sprintf(sTmp_lines, "      %u", i_lines);
-						}
 						else if (i_lines < 1000)
-						{
 							sprintf(sTmp_lines, "    %u", i_lines);
-						}
 						else if (i_lines < 10000)
-						{
 							sprintf(sTmp_lines, "  %u", i_lines);
-						}
 						else
-						{
 							sprintf(sTmp_lines, "%u", i_lines);
-						}
 						//score
 						if (i_score < 10)
-						{
 							sprintf(sTmp_score, "        %u", i_score);
-						}
 						else if (i_score < 100)
-						{
 							sprintf(sTmp_score, "      %u", i_score);
-						}
 						else if (i_score < 1000)
-						{
 							sprintf(sTmp_score, "    %u", i_score);
-						}
 						else if (i_score < 10000)
-						{
 							sprintf(sTmp_score, "  %u", i_score);
-						}
 						else
-						{
 							sprintf(sTmp_score, "%u", i_score);
-						}
 						//level
 						if (i_level < 10)
-						{
 							sprintf(sTmp_level, "  %u", i_level);
-						}
 						else
-						{
 							sprintf(sTmp_level, "%u", i_level);
-						}
+
 						render_font(gRenderer, gFont, sTmp_score, DEEP_COLOR, LIGHT_COLOR, 145, 20, NULL, 0.0, NULL, SDL_FLIP_NONE);
 						render_font(gRenderer, gFont, sTmp_lines, DEEP_COLOR, LIGHT_COLOR, 145, 55, NULL, 0.0, NULL, SDL_FLIP_NONE);
 						render_font(gRenderer, gFont, sTmp_level, DEEP_COLOR, LIGHT_COLOR, 175, 90, NULL, 0.0, NULL, SDL_FLIP_NONE);
