@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
 				else if (0 == strcmp(argv[1], "-TGM"))
 					i_mode = 2;
 				else if (0 == strcmp(argv[1], "-V") || 0 == strcmp(argv[1], "--version"))
-					printf("20.21.02\n");
+					printf("20.21.03\n");
 				else if (0 == strcmp(argv[1], "-H") || 0 == strcmp(argv[1], "--help"))
 					printf(
 						"%s [option]\n"
@@ -335,24 +335,24 @@ int main(int argc, char *argv[])
 						if (i_lines < 10)
 							sprintf(sTmp_lines, "        %u", i_lines);
 						else if (i_lines < 100)
-							sprintf(sTmp_lines, "      %u", i_lines);
+							sprintf(sTmp_lines, "       %u", i_lines);
 						else if (i_lines < 1000)
-							sprintf(sTmp_lines, "    %u", i_lines);
+							sprintf(sTmp_lines, "     %u", i_lines);
 						else if (i_lines < 10000)
-							sprintf(sTmp_lines, "  %u", i_lines);
+							sprintf(sTmp_lines, "    %u", i_lines);
 						else
-							sprintf(sTmp_lines, "%u", i_lines);
+							sprintf(sTmp_lines, "  %u", i_lines);
 						//score
 						if (i_score < 10)
 							sprintf(sTmp_score, "        %u", i_score);
 						else if (i_score < 100)
-							sprintf(sTmp_score, "      %u", i_score);
+							sprintf(sTmp_score, "       %u", i_score);
 						else if (i_score < 1000)
-							sprintf(sTmp_score, "    %u", i_score);
+							sprintf(sTmp_score, "     %u", i_score);
 						else if (i_score < 10000)
-							sprintf(sTmp_score, "  %u", i_score);
+							sprintf(sTmp_score, "    %u", i_score);
 						else
-							sprintf(sTmp_score, "%u", i_score);
+							sprintf(sTmp_score, "  %u", i_score);
 						//level
 						if (i_level < 10)
 							sprintf(sTmp_level, "  %u", i_level);
