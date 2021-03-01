@@ -2,7 +2,7 @@
 Version=20.21.03
 Encoding=UTF-8
 Name=tetris-ever-mixer
-Comment=a simple tetris game writen with C, and be render by SDL2.
+Comment=A simple tetris game is written with C, and is rendered by SDL2.
 Exec=tetris-ever-mixer
 Terminal=false
 Type=Application

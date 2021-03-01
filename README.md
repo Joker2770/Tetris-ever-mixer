@@ -1,5 +1,5 @@
 # Tetris-ever-mixer
-An simple tetris game writen with C, and be render by SDL2.
+A simple tetris game is written with C, and is rendered by SDL2.
 
 ## Dependencies
 Required:
