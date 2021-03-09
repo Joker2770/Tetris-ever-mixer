@@ -401,6 +401,12 @@ int main(int argc, char *argv[])
 									case SDLK_ESCAPE:
 										quit = true;
 										break;
+									case SDLK_0:
+										//Stop the music
+										Mix_HaltMusic();
+										render_font(gRenderer, gFont, "M", LIGHT_COLOR, BG_COLOR, 125, 200, NULL, 0.0, NULL, SDL_FLIP_NONE);
+										SDL_RenderPresent(gRenderer);
+										break;
 									default:
 										break;
 									}
