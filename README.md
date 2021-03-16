@@ -3,7 +3,7 @@ A simple tetris game is written with C, and is rendered by SDL2.
 
 ## Dependencies
 Required:
-* [cmake](http://www.cmake.org) - buildsystem
+* [cmake](http://www.cmake.org) - build system
 * g++ (>= 7.4.0 recommended)
 * gcc (>= 7.4.0 recommended)
 * libsdl2-dev,libsdl2-ttf-dev,libsdl2-mixer-dev (Linux), sdl2.nuget,sdl2_ttf.nuget,sdl2_mixer.nuget (Windows)
