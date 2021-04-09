@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
 			unsigned int i_score = 0;
 			unsigned int i_level = 0;
 			uint16_t i_seed = 0;
-			bool bPause = false;
+			int i_volume = 100;
 
 			if (argc == 2)
 			{
@@ -167,8 +167,10 @@ int main(int argc, char *argv[])
 						"* down - control rock fall down.\n"
 						"* left - control rock to left.\n"
 						"* right - control rock to right.\n"
-						"* 9 - play/pause the music.\n"
-						"* 0 - halt music.\n",
+						"* M - toggle mute.\n"
+						"* H - halt music.\n"
+						"* 9 - volume down.\n"
+						"* 0 - volume up.\n",
 						argv[0]);
 			}
 			printf("\ni_mode: %d\n", i_mode);
@@ -234,7 +236,7 @@ int main(int argc, char *argv[])
 						case SDLK_ESCAPE:
 							quit = true;
 							break;
-						case SDLK_9:
+						case SDLK_m:
 							//If there is no music playing
 							if (Mix_PlayingMusic() == 0)
 							{
@@ -264,11 +266,19 @@ int main(int argc, char *argv[])
 								}
 							}
 							break;
-						case SDLK_0:
+						case SDLK_h:
 							//Stop the music
 							Mix_HaltMusic();
 							render_font(gRenderer, gFont, "M", LIGHT_COLOR, BG_COLOR, 125, 200, NULL, 0.0, NULL, SDL_FLIP_NONE);
 							SDL_RenderPresent(gRenderer);
+							break;
+						case SDLK_9:
+							if (i_volume > 0)
+								Mix_VolumeMusic(--i_volume);
+							break;
+						case SDLK_0:
+							if (i_volume < 128)
+								Mix_VolumeMusic(++i_volume);
 							break;
 						default:
 							break;
