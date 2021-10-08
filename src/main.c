@@ -30,11 +30,11 @@ SOFTWARE. */
 #include "tetris.h"
 #include "config.h"
 
-#ifdef _MSC_VER
-#include <windows.h>
-#else
-#include <unistd.h>
-#endif
+// #ifdef _MSC_VER
+// #include <windows.h>
+// #else
+// #include <unistd.h>
+// #endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
 				else if (0 == strcmp(argv[1], "-TGM"))
 					i_mode = 2;
 				else if (0 == strcmp(argv[1], "-V") || 0 == strcmp(argv[1], "--version"))
-					printf("20.21.04\n");
+					printf("20.21.10\n");
 				else if (0 == strcmp(argv[1], "-H") || 0 == strcmp(argv[1], "--help"))
 					printf(
 						"%s [option]\n"
@@ -291,11 +291,12 @@ int main(int argc, char *argv[])
 				render_rock(135, 125, shape_data->next_bit, true);
 				render_rock(shape_data->x * 10, shape_data->y * 10, shape_data->cur_bit, true);
 				SDL_RenderPresent(gRenderer);
-#ifdef _MSC_VER
-				Sleep(1000 * (1 - i_level / (i_level + 2)));
-#else
-				usleep(1000000 * (1 - i_level / (i_level + 2)));
-#endif
+// #ifdef _MSC_VER
+// 				Sleep(1000 * (1 - i_level / (i_level + 2)));
+// #else
+// 				usleep(1000000 * (1 - i_level / (i_level + 2)));
+// #
+				SDL_Delay(1000 * (1 - i_level / (i_level + 2)));
 				render_rock(shape_data->x * 10, shape_data->y * 10, shape_data->cur_bit, false);
 				SDL_RenderPresent(gRenderer);
 
@@ -335,7 +336,7 @@ int main(int argc, char *argv[])
 					if (i_count > 0)
 					{
 						i_lines += i_count;
-						i_score += i_level * i_count * 10;
+						i_score += i_level * i_count;
 						char sTmp_lines[16] = "";
 						memset(sTmp_lines, 0, sizeof(sTmp_lines));
 						char sTmp_score[16] = "";
