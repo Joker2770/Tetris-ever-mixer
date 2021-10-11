@@ -6,5 +6,5 @@ Comment=A simple tetris game is written with C, and is rendered by SDL2.
 Exec=tetris-ever-mixer
 Terminal=false
 Type=Application
-Categories=Graphics;Games;Entertainment;
+Categories=Game;BlocksGame;
 Icon=${SNAP}/meta/gui/icon.png

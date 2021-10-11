@@ -1,4 +1,7 @@
 # Tetris-ever-mixer
+
+[![tetris-ever-mixer](https://snapcraft.io/tetris-ever-mixer/badge.svg)](https://snapcraft.io/tetris-ever-mixer)
+
 A simple tetris game is written with C, and is rendered by SDL2.
 
 ## Dependencies
