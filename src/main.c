@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
 				else if (0 == strcmp(argv[1], "-TGM"))
 					i_mode = 2;
 				else if (0 == strcmp(argv[1], "-V") || 0 == strcmp(argv[1], "--version"))
-					printf("20.21.10\n");
+					printf("20.21.11\n");
 				else if (0 == strcmp(argv[1], "-H") || 0 == strcmp(argv[1], "--help"))
 					printf(
 						"%s [option]\n"
@@ -431,6 +431,9 @@ int main(int argc, char *argv[])
 							i_seed = 0;
 							render_font(gRenderer, gFont, "Game Over!", LIGHT_COLOR, DEEP_COLOR, 25, 100, NULL, 0.0, NULL, SDL_FLIP_NONE);
 							SDL_RenderPresent(gRenderer);
+
+							//Reduce FPS
+							SDL_Delay(100);
 						}
 					}
 				}
