@@ -69,6 +69,8 @@ uint16_t rotate_rock(int i_mode, uint16_t i_seed, p_shape_data_t shapeData)
         shapeData->cur_bit = SRS[shapeData->cur_shape_line][i_seed & 3];
     else
         shapeData->cur_bit = TGM[shapeData->cur_shape_line][i_seed & 3];
+
+    return shapeData->cur_bit;
 }
 
 bool check_collision(p_shape_data_t shapeData, int offset)
