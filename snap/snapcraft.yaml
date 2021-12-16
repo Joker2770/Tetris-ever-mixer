@@ -1,7 +1,7 @@
 
   # After registering a name on build.snapcraft.io, commit an uncommented line:
   name: tetris-ever-mixer
-  version: '20.21.11' # just for humans, typically '1.2+git' or '1.3.2'
+  version: '20.21.12' # just for humans, typically '1.2+git' or '1.3.2'
   summary: A simple tetris game is written with C, and is rendered by SDL2. # 79 char long summary
   description: |
     **available key control for pure keyboard:**
@@ -29,6 +29,20 @@
   # architectures:
     # - build-on: i386
       # run-on: i386
+
+  plugs: # plugs for theming, font settings, cursor and to use gtk3 file chooser
+    gtk-3-themes:
+      interface: content
+      target: $SNAP/data-dir/themes
+      default-provider: gtk-common-themes
+    icon-themes:
+      interface: content
+      target: $SNAP/data-dir/icons
+      default-provider: gtk-common-themes
+    sound-themes:
+      interface: content
+      target: $SNAP/data-dir/sounds
+      default-provider: gtk-common-themes
   
   apps:
     tetris-ever-mixer:
@@ -51,6 +65,7 @@
         - wayland
         - unity7
         - x11
+        - gsettings
         
   layout:
     /usr/local/bin/bb3273.ttf:
@@ -59,12 +74,14 @@
       bind-file: $SNAP/usr/local/bin/tetrisb.mid
     /usr/share/midi/freepats:
       bind: $SNAP/usr/share/midi/freepats
-    /etc/timidity:
-      bind: $SNAP/etc/timidity
     /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib:
       bind: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib
     /usr/share/alsa:
       bind: $SNAP/usr/share/alsa
+    /etc/timidity:
+      bind: $SNAP/etc/timidity
+    /etc/fonts:
+      bind: $SNAP/etc/fonts
     
   parts:
     alsa-mixin:
@@ -95,9 +112,9 @@
         - libsdl2-mixer-dev
   
       stage-packages:
-        - try:
-          - libfluidsynth1
-          - libfluidsynth2
+        # - try:
+          # - libfluidsynth1
+          # - libfluidsynth2
         - libsdl2-2.0-0
         - libsdl2-ttf-2.0-0
         - libsdl2-mixer-2.0-0
