@@ -48,7 +48,6 @@
     tetris-ever-mixer:
       command-chain: ["snap/command-chain/alsa-launch"]
       command: usr/local/bin/Tetris-ever-mixer
-      # desktop: tetris-ever-mixer.desktop
       environment:
         # pulseaudio
         LD_LIBRARY_PATH: ${SNAP}/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio
@@ -56,6 +55,7 @@
         # PULSE_SYSTEM: 1
         # PULSE_RUNTIME_PATH: /var/run/pulse
         # PULSE_SERVER: unix:$XDG_RUNTIME_DIR/../pulse/native
+      extensions: [gnome-3-28]
       plugs:
         - audio-playback
         - pulseaudio
@@ -112,9 +112,6 @@
         - libsdl2-mixer-dev
   
       stage-packages:
-        # - try:
-          # - libfluidsynth1
-          # - libfluidsynth2
         - libsdl2-2.0-0
         - libsdl2-ttf-2.0-0
         - libsdl2-mixer-2.0-0
@@ -123,26 +120,3 @@
         - libopusfile0
         - libpulse0
         - libsndfile1
-        # - libvorbis0a
-        # - libvorbisfile3
-        # - libvorbisenc2
-        # - libasound2
-        # - libasound2-plugins
-        # - libxcursor1
-        # - libxi6
-        # - libxinerama1
-        # - libxkbcommon0
-        # - libxrandr2
-        # - libxrender1
-        # - libxss1
-        # - libxcb1
-        # - libxau6
-        # - libxdmcp6
-        # - libfreetype6
-        # - libasyncns0
-        # - libflac8
-        # - libmpg123-0
-        # - libogg0
-        # - alsa-utils
-        # - timidity
-        # - timgm6mb-soundfont
