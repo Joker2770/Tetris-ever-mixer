@@ -71,7 +71,7 @@ static const uint16_t TGM[7][4] = {
 	{0x4159, 0x4596, 0x1596, 0x4156},
 	{0x156A, 0x4152, 0x156A, 0x4152}};
 
-int GMPOOL[12][22];
+static int GMPOOL[12][22];
 
 typedef struct rock_shape_data
 {
