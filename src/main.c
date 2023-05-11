@@ -7,7 +7,7 @@
 
 /* MIT License
 
-Copyright (c) 2021 Joker2770
+Copyright (c) 2021-2023 Joker2770
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
 				else if (0 == strcmp(argv[1], "-TGM"))
 					i_mode = 2;
 				else if (0 == strcmp(argv[1], "-V") || 0 == strcmp(argv[1], "--version"))
-					printf("20.21.12\n");
+					printf("20.23.05\n");
 				else if (0 == strcmp(argv[1], "-H") || 0 == strcmp(argv[1], "--help"))
 					printf(
 						"%s [option]\n"

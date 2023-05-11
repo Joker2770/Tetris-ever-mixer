@@ -17,8 +17,15 @@ if(UNIX)
 	pkg_check_modules( SDL2_mixer REQUIRED IMPORTED_TARGET SDL2_mixer )
 endif()
 
-include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIR})
-file(GLOB Tetris_SRCS "src/*.c" "src/*.h")
+include_directories(
+	${CMAKE_SOURCE_DIR}
+	${SDL2_INCLUDE_DIRS}
+	${SDL2_TTF_INCLUDE_DIR}
+)
+set(Tetris_SRCS
+	"${CMAKE_SOURCE_DIR}/src/main.c"
+	"${CMAKE_SOURCE_DIR}/src/tetris.c"
+)
 add_executable(${PROJECT_NAME} ${Tetris_SRCS})
 
 if(UNIX)
