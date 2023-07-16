@@ -53,10 +53,6 @@ typedef int bool;
 #endif
 #endif
 
-extern const uint16_t SRS[7][4];
-extern const uint16_t TGM[7][4];
-extern int GMPOOL[12][22];
-
 typedef struct rock_shape_data
 {
 	uint16_t cur_bit;

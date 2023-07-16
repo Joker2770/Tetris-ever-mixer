@@ -40,6 +40,10 @@ SOFTWARE. */
 #include <stdlib.h>
 #include <time.h>
 
+extern const uint16_t SRS[7][4];
+extern const uint16_t TGM[7][4];
+extern int GMPOOL[12][22];
+
 //Starts up SDL and creates window
 bool init();
 
